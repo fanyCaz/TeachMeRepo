@@ -5,6 +5,12 @@
  */
 package teachme;
 
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import static teachme.TeachMe.getConection;
+
 /**
  *
  * @author estef
@@ -27,9 +33,9 @@ public class RegistrarseView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         radioAsesor = new javax.swing.JRadioButton();
-        radioAlumno = new javax.swing.JRadioButton();
         txtNombre = new javax.swing.JTextField();
         txtApPaterno = new javax.swing.JTextField();
         txtApMaterno = new javax.swing.JTextField();
@@ -42,20 +48,16 @@ public class RegistrarseView extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         psw = new javax.swing.JPasswordField();
         jLabel6 = new javax.swing.JLabel();
-        btnLogin = new javax.swing.JButton();
+        radioAlumno = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
+        buttonGroup1.add(radioAsesor);
         radioAsesor.setText("Soy Asesor");
-
-        radioAlumno.setText("Soy Alumno");
-        radioAlumno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioAlumnoActionPerformed(evt);
-            }
-        });
+        radioAsesor.setToolTipText("");
+        radioAsesor.setName(""); // NOI18N
 
         txtNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -87,6 +89,14 @@ public class RegistrarseView extends javax.swing.JFrame {
         jLabel5.setText("Contraseña");
 
         jLabel6.setText("REGISTRATE");
+
+        buttonGroup1.add(radioAlumno);
+        radioAlumno.setText("Soy Alumno");
+        radioAlumno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioAlumnoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -122,7 +132,7 @@ public class RegistrarseView extends javax.swing.JFrame {
                                         .addGap(13, 13, 13)
                                         .addComponent(psw, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(radioAlumno))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(291, 291, 291)
@@ -162,27 +172,21 @@ public class RegistrarseView extends javax.swing.JFrame {
                 .addContainerGap(85, Short.MAX_VALUE))
         );
 
-        btnLogin.setText("Iniciar Sesión");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(20, 20, 20)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap(20, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(34, 34, 34))
         );
 
         pack();
@@ -202,6 +206,36 @@ public class RegistrarseView extends javax.swing.JFrame {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
+        String nombre,ap_paterno,ap_materno,nom_usuario;
+        char[] password;
+        int tipoUsuario;
+        nombre = txtNombre.getText();
+        ap_paterno = txtApPaterno.getText();
+        ap_materno = txtApMaterno.getText();
+        nom_usuario = txtNomUser.getText();
+        password = psw.getPassword();
+        tipoUsuario = ( radioAsesor.isSelected() ) ? 1 : 2; //1 es Asesor, 2 es Alumno
+        try {
+            Connection con = null;
+            con = getConection();
+            PreparedStatement ps;
+            ResultSet res;
+            String query;
+            query = "INSERT INTO usuarios (nombre,ap_paterno,ap_materno,usuario,password) VALUES (?,?,?,?,?)";
+            ps = (PreparedStatement) con.prepareStatement(query); /* El nombre de la tabla*/
+            ps.setString(1, nombre);
+            res = ps.executeQuery();
+
+            if (res.next()) {
+                JOptionPane.showMessageDialog(null, res.getString("nombre")); /* los datos que deseas imprimir */
+
+            } else {
+                JOptionPane.showMessageDialog(null, "No Existen Datos.");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+
+        }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     /**
@@ -241,7 +275,7 @@ public class RegistrarseView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
-    private javax.swing.JButton btnLogin;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
