@@ -19,13 +19,22 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="usuario")
+
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @javax.persistence.Id
+    @javax.persistence.GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@javax.persistence.Entity(name = "usuario")
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name="usuario", nullable=false)
+    private String usuario;
+    
+    @Column(name="password", nullable=false)
+    private String password;
+    
     @Column(name="nombre", nullable=false)
     private String nombre;
     
@@ -34,12 +43,38 @@ public class Usuario implements Serializable {
     
     @Column(name="ap_materno", nullable=false)
     private String ap_materno;
-    
-    @Column(name="usuario", nullable=false)
-    private String usuario;
-    
-    @Column(name="password", nullable=false)
-    private String password;
+
+    public String getAp_paterno() {
+        return ap_paterno;
+    }
+
+    public void setAp_paterno(String ap_paterno) {
+        this.ap_paterno = ap_paterno;
+    }
+
+    public String getAp_materno() {
+        return ap_materno;
+    }
+
+    public void setAp_materno(String ap_materno) {
+        this.ap_materno = ap_materno;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
     
     public Long getId() {
         return id;
@@ -55,14 +90,6 @@ public class Usuario implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-    
-    public String getApPaterno() {
-        return ap_paterno;
-    }
-
-    public void setApPaterno(String ap_paterno) {
-        this.ap_paterno = ap_paterno;
     }
     
     @Override

@@ -29,6 +29,7 @@ public class TeachMe {
             con = getConection();
             PreparedStatement ps;
             ResultSet res;
+            
             //ps = (PreparedStatement) con.prepareStatement("SELECT * FROM materias"); /* El nombre de la tabla*/
             //res = ps.executeQuery();
             /*if (res.next()) {

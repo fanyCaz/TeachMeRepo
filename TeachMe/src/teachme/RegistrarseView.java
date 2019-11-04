@@ -8,8 +8,11 @@ package teachme;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import java.sql.ResultSet;
-import javax.swing.JOptionPane;
+import Clases.Usuario;
 import static teachme.TeachMe.getConection;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  *
@@ -206,6 +209,9 @@ public class RegistrarseView extends javax.swing.JFrame {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
+        EntityManagerFactory em = Persistence.createEntityManagerFactory("TeachMePU");
+        EntityManager emag = em.createEntityManager();
+        emag.getTransaction().begin();
         String nombre,ap_paterno,ap_materno,nom_usuario;
         char[] password;
         int tipoUsuario;
@@ -221,17 +227,28 @@ public class RegistrarseView extends javax.swing.JFrame {
             PreparedStatement ps;
             ResultSet res;
             String query;
-            query = "INSERT INTO usuarios (nombre,ap_paterno,ap_materno,usuario,password) VALUES (?,?,?,?,?)";
-            ps = (PreparedStatement) con.prepareStatement(query); /* El nombre de la tabla*/
-            ps.setString(1, nombre);
-            res = ps.executeQuery();
-
-            if (res.next()) {
-                JOptionPane.showMessageDialog(null, res.getString("nombre")); /* los datos que deseas imprimir */
-
-            } else {
-                JOptionPane.showMessageDialog(null, "No Existen Datos.");
-            }
+            
+         Usuario user = new Usuario();
+         user.setNombre("fanyyyy");
+         user.setUsuario("fany");
+         user.setAp_paterno("aooo");
+         user.setAp_materno("matenro");
+         user.setPassword("passwoed");
+         emag.persist(user);
+         emag.getTransaction().commit();
+         emag.close();
+         em.close();
+//            query = "INSERT INTO usuarios (nombre,ap_paterno,ap_materno,usuario,password) VALUES (?,?,?,?,?)";
+//            ps = (PreparedStatement) con.prepareStatement(query); /* El nombre de la tabla*/
+//            ps.setString(1, nombre);
+//            res = ps.executeQuery();
+//
+//            if (res.next()) {
+//                JOptionPane.showMessageDialog(null, res.getString("nombre")); /* los datos que deseas imprimir */
+//
+//            } else {
+//                JOptionPane.showMessageDialog(null, "No Existen Datos.");
+//            }
         } catch (Exception e) {
             System.out.println(e);
 
