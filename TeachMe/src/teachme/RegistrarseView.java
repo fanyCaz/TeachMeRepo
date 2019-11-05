@@ -229,6 +229,7 @@ public class RegistrarseView extends javax.swing.JFrame {
             String query;
             
          Usuario user = new Usuario();
+         //user.setId(4);
          user.setNombre("fanyyyy");
          user.setUsuario("fany");
          user.setAp_paterno("aooo");

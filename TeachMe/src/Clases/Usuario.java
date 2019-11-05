@@ -8,9 +8,7 @@ package Clases;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -22,13 +20,16 @@ import javax.persistence.Table;
 
 public class Usuario implements Serializable {
 
+
     private static final long serialVersionUID = 1L;
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = GenerationType.IDENTITY)
     //@javax.persistence.Entity(name = "usuario")
     //@GeneratedValue(strategy = GenerationType.AUTO)
+    
+    @Column(name="id",nullable=false)
     private Long id;
-
+    
     @Column(name="usuario", nullable=false)
     private String usuario;
     
@@ -106,9 +107,9 @@ public class Usuario implements Serializable {
             return false;
         }
         Usuario other = (Usuario) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
+//        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+//            return false;
+//        }
         return true;
     }
 
@@ -116,5 +117,18 @@ public class Usuario implements Serializable {
     public String toString() {
         return "Clases.Usuario[ id=" + id + " ]";
     }
+
+    public void setId(int i) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
+        public Usuario() {
+        super();
+//        this.id = id;
+//        this.usuario = usuario;
+//        this.password = password;
+//        this.nombre = nombre;
+//        this.ap_paterno = ap_paterno;
+//        this.ap_materno = ap_materno;
+    }
 }
