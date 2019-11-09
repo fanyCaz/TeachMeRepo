@@ -24,6 +24,7 @@ public class TeachMe {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        encripta("mtqn",1);
         try {
             Connection con = null;
             con = getConection();
@@ -62,4 +63,30 @@ public class TeachMe {
             return con;
         }
     
+        public static String encripta(String psw, int desencripta){
+            String resultadoEncript;
+            
+            if(desencripta == 1){
+                //encriptado = "mtqn";
+                char arrayD[] = psw.toCharArray();
+                for(int i=0; i< arrayD.length; i++){
+                        arrayD[i] = (char)(arrayD[i] - (char)5);
+                }
+                String desencriptado = String.valueOf(arrayD);
+                System.out.println(desencriptado);
+            }
+            else{
+                String mensaje = "Contraseña23";
+                char array[] = psw.toCharArray();
+                for(int i=0; i< array.length; i++){
+                        array[i] = (char)(array[i] + (char)5);
+                }
+
+                String encriptado = String.valueOf(array);
+                System.out.println(encriptado);
+                //
+            }
+            return "holllll";
+        }
+
 }

@@ -52,6 +52,11 @@ public class Index extends javax.swing.JFrame {
         jLabel2.setText("Nombre de Usuario");
 
         btnLogin.setText("Iniciar Sesión");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -130,6 +135,14 @@ public class Index extends javax.swing.JFrame {
         
         this.setVisible(false);
     }//GEN-LAST:event_txtRegistrarActionPerformed
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        // TODO add your handling code here:
+        String nombreUsuario = txtUsername.getText();
+        String password = txtPassword.getText();
+        
+        
+    }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
      * @param args the command line arguments
