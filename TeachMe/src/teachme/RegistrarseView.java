@@ -10,26 +10,45 @@ import com.mysql.jdbc.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import static teachme.TeachMe.getConection;
-import validation.validar1;
 import validation.validar2;
 /*CLASES*/
 import Clases.Usuario;
-import static teachme.TeachMe.encripta;
+import Clases.Asesor;
+import Clases.Alumno;
+import com.mysql.jdbc.Statement;
+import java.awt.event.ActionListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 /**
  *
  * @author estef
  */
 public class RegistrarseView extends javax.swing.JFrame {
-
-    /**
-     * Creates new form RegistrarseView
-     */
+    
+    ChangeListener changeListener = new ChangeListener() {
+      @Override
+      public void stateChanged(ChangeEvent changEvent) {
+       // AbstractButton aButton = (AbstractButton)changEvent.getSource();
+       // ButtonModel aModel = aButton.getModel();
+       boolean selected = radioAlumno.isSelected();
+       if(selected){
+            txtSemestre.setVisible(true);
+        }
+        else{
+            txtSemestre.setVisible(false);
+        }
+      }
+    };
+    
     public RegistrarseView() {
         initComponents();
         validar2 v=new validar2();
+        radioAlumno.addChangeListener(changeListener); //Detectar si cambia el selected
         v.validarSoloLetras(txtNombre);
         v.validarSoloLetras(txtApPaterno);
         v.validarSoloLetras(txtApMaterno);
+        v.validarEspacios(txtpsw);
+        v.validarSoloNumeros(txtSemestre);
     }
 
     /**
@@ -59,6 +78,7 @@ public class RegistrarseView extends javax.swing.JFrame {
         lblError = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         txtpsw = new javax.swing.JTextField();
+        txtSemestre = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -144,17 +164,19 @@ public class RegistrarseView extends javax.swing.JFrame {
                                     .addComponent(txtpsw)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(radioAlumno))))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(radioAlumno)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(291, 291, 291)
-                        .addComponent(btnAceptar))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(315, 315, 315)
+                        .addGap(749, 749, 749)
                         .addComponent(lblError))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(157, 157, 157)
-                        .addComponent(lblerror, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(40, Short.MAX_VALUE))
+                        .addGap(159, 159, 159)
+                        .addComponent(lblerror, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(312, 312, 312)
+                        .addComponent(btnAceptar)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,30 +203,31 @@ public class RegistrarseView extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(radioAsesor)
                     .addComponent(radioAlumno))
-                .addGap(18, 18, 18)
-                .addComponent(btnAceptar)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
                 .addComponent(lblError)
-                .addGap(18, 18, 18)
+                .addGap(4, 4, 4)
+                .addComponent(btnAceptar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblerror, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 14, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(25, 25, 25)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(34, 34, 34))
+                .addGap(38, 38, 38))
         );
 
         pack();
@@ -226,15 +249,25 @@ public class RegistrarseView extends javax.swing.JFrame {
         // TODO add your handling code here:
         String nombre="",ap_paterno="",ap_materno="",nom_usuario="",nombre_result, password="";
         String pswEncriptado;
+        int idGuardado,semestre=0;
         nombre_result = null;
-        
         int tipoUsuario;
+        Usuario nuevoUser = new Usuario();
         nombre = txtNombre.getText();
         ap_paterno = txtApPaterno.getText();
         ap_materno = txtApMaterno.getText();
         nom_usuario = txtNomUser.getText();
         password = txtpsw.getText();
-//        tipoUsuario = ( radioAsesor.isSelected() ) ? 1 : 2; //1 es Asesor, 2 es Alumno
+        tipoUsuario = ( radioAsesor.isSelected() ) ? 1 : 2; //1 es Asesor, 2 es Alumno, este es un if ternario
+        if(tipoUsuario == 2){
+            semestre = Integer.parseInt(txtSemestre.getText());
+        }
+        nuevoUser.setNombre(nombre);
+        nuevoUser.setApPaterno(ap_paterno);
+        nuevoUser.setApMaterno(ap_materno);
+        nuevoUser.setUsername(nom_usuario);
+        nuevoUser.setPassword(password);
+        
         try {
             Connection con = null;
             con = getConection();
@@ -252,15 +285,43 @@ public class RegistrarseView extends javax.swing.JFrame {
             }
             else{
                 lblerror.setText("Si se puede registrar");
-                pswEncriptado =TeachMe.encripta(password, 2);
-            query = "INSERT INTO usuario (nombre,ap_paterno,ap_materno,username, password) VALUES (?,?,?,?,?)";
-            ps = (PreparedStatement) con.prepareStatement(query); /* El nombre de la tabla*/
-            ps.setString(1, nombre);
-            ps.setString(2,ap_paterno);
-            ps.setString(3, ap_materno);
-            ps.setString(4, nom_usuario);
-            ps.setString(5, pswEncriptado);
-            ps.execute();
+                pswEncriptado =TeachMe.encripta(nuevoUser.getPassword(), 2);
+                query = "INSERT INTO usuario (nombre,ap_paterno,ap_materno,username, password) VALUES (?,?,?,?,?)";
+                ps = (PreparedStatement) con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS); /* El nombre de la tabla*/
+                ps.setString(1, nuevoUser.getNombre());
+                ps.setString(2, nuevoUser.getApPaterno());
+                ps.setString(3, nuevoUser.getApMaterno());
+                ps.setString(4, nuevoUser.getUsername());
+                ps.setString(5, pswEncriptado);
+                ps.executeUpdate();
+                ResultSet affected = ps.getGeneratedKeys(); //Para ver el id con el que se guardo este usuario
+                if(affected.next()){
+                    idGuardado = affected.getInt(1);
+                    //Si el usuario es asesor
+                    if(tipoUsuario == 1){
+                        Asesor nuevoAsesor = new Asesor();
+                        nuevoAsesor.setCalificacion(0);
+                        nuevoAsesor.setId_usuario(idGuardado);
+                        String q2 = "INSERT INTO asesores (id_usuario, calificacion) VALUES(?,?)";
+                        ps = (PreparedStatement) con.prepareStatement(q2, Statement.RETURN_GENERATED_KEYS); /* El nombre de la tabla*/
+                        ps.setInt(1, nuevoAsesor.getId_usuario());
+                        ps.setDouble(2, nuevoAsesor.getCalificacion());
+                        ps.execute();
+                    }
+                    //Si el usuario es estudiante
+                    else{
+                        Alumno nuevoAlumno = new Alumno();
+                        nuevoAlumno.setSemestre(semestre);
+                        nuevoAlumno.setId_usuario(idGuardado);
+                        String q2 = "INSERT INTO alumnos (id_usuario, semestre) VALUES(?,?)";
+                        ps = (PreparedStatement) con.prepareStatement(q2, Statement.RETURN_GENERATED_KEYS); /* El nombre de la tabla*/
+                        ps.setInt(1, nuevoAlumno.getId_usuario());
+                        ps.setDouble(2, nuevoAlumno.getSemestre());
+                        ps.execute();
+                    }
+                }
+
+                
                 Thread.sleep(1000);
                 Index r = new Index();
                 r.setVisible(true);
@@ -269,11 +330,7 @@ public class RegistrarseView extends javax.swing.JFrame {
             
             System.out.println(nombre_result);
 
-//            if(tipoUsuario == 1){
-//                
-//                String q2 = "INSERT INTO asesores (id_usuario) VALUES(?)";
-//                
-//            }
+//            
 //
 //            if (res.next()) {
 //                JOptionPane.showMessageDialog(null, res.getString("nombre")); /* los datos que deseas imprimir */
@@ -359,6 +416,7 @@ public class RegistrarseView extends javax.swing.JFrame {
     private javax.swing.JTextField txtApPaterno;
     private javax.swing.JTextField txtNomUser;
     private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtSemestre;
     private javax.swing.JTextField txtpsw;
     // End of variables declaration//GEN-END:variables
 }

@@ -30,7 +30,21 @@ public class validar2 {
     });
     }
     
-        public void validarSoloNumeros(JTextField campo){
+    public void validarEspacios(JTextField campo){
+        campo.addKeyListener(new KeyAdapter() {
+          public void keyTyped(KeyEvent e){
+              char c = e.getKeyChar();
+              int k=(int)e.getKeyChar();
+              if(k==32){ // el 32 signfica en el codigo ascii el espacio
+              e.consume();
+               System.out.println("car: "+c); 
+              }
+          }
+
+        });
+    }
+    
+    public void validarSoloNumeros(JTextField campo){
     campo.addKeyListener(new KeyAdapter() {
       public void keyTyped(KeyEvent e){
           char c = e.getKeyChar();
