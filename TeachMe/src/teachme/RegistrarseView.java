@@ -10,7 +10,8 @@ import com.mysql.jdbc.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import static teachme.TeachMe.getConection;
-
+import validation.validar1;
+import validation.validar2;
 /*CLASES*/
 import Clases.Usuario;
 import static teachme.TeachMe.encripta;

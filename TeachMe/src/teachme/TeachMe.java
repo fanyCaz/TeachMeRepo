@@ -65,7 +65,7 @@ public class TeachMe {
     
         public static String encripta(String psw, int desencripta){
             String resultadoEncript;
-            
+            //desencripta el mensaje
             if(desencripta == 1){
                 //encriptado = "mtqn";
                 char arrayD[] = psw.toCharArray();
@@ -75,8 +75,9 @@ public class TeachMe {
                 String desencriptado = String.valueOf(arrayD);
                 System.out.println(desencriptado);
             }
+            //encripta el mensaje
             else{
-                String mensaje = "Contraseña23";
+                String mensaje = psw;
                 char array[] = psw.toCharArray();
                 for(int i=0; i< array.length; i++){
                         array[i] = (char)(array[i] + (char)5);
