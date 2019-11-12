@@ -26,6 +26,10 @@ public class RegistrarseView extends javax.swing.JFrame {
      */
     public RegistrarseView() {
         initComponents();
+        validar2 v=new validar2();
+        v.validarSoloLetras(txtNombre);
+        v.validarSoloLetras(txtApPaterno);
+        v.validarSoloLetras(txtApMaterno);
     }
 
     /**
@@ -221,6 +225,7 @@ public class RegistrarseView extends javax.swing.JFrame {
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         String nombre="",ap_paterno="",ap_materno="",nom_usuario="",nombre_result, password="";
+        String pswEncriptado;
         nombre_result = null;
         
         int tipoUsuario;
@@ -247,13 +252,14 @@ public class RegistrarseView extends javax.swing.JFrame {
             }
             else{
                 lblerror.setText("Si se puede registrar");
-                //encripta();
-            query = "INSERT INTO usuario (nombre,ap_paterno,ap_materno,username) VALUES (?,?,?,?)";
+                pswEncriptado =TeachMe.encripta(password, 2);
+            query = "INSERT INTO usuario (nombre,ap_paterno,ap_materno,username, password) VALUES (?,?,?,?,?)";
             ps = (PreparedStatement) con.prepareStatement(query); /* El nombre de la tabla*/
             ps.setString(1, nombre);
             ps.setString(2,ap_paterno);
             ps.setString(3, ap_materno);
             ps.setString(4, nom_usuario);
+            ps.setString(5, pswEncriptado);
             ps.execute();
                 Thread.sleep(1000);
                 Index r = new Index();

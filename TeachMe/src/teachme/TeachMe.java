@@ -74,6 +74,7 @@ public class TeachMe {
                 }
                 String desencriptado = String.valueOf(arrayD);
                 System.out.println(desencriptado);
+                return desencriptado;
             }
             //encripta el mensaje
             else{
@@ -85,9 +86,9 @@ public class TeachMe {
 
                 String encriptado = String.valueOf(array);
                 System.out.println(encriptado);
+                return encriptado;
                 //
             }
-            return "holllll";
         }
 
 }
