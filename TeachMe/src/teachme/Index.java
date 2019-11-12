@@ -4,7 +4,12 @@
  * and open the template in the editor.
  */
 package teachme;
-
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+import static teachme.TeachMe.getConection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import validation.validar2;
 /**
  *
  * @author estef
@@ -16,6 +21,9 @@ public class Index extends javax.swing.JFrame {
      */
     public Index() {
         initComponents();
+        validar2 v = new validar2();
+        v.validarEspacios(txtPassword);
+        v.validarEspacios(txtUsername);
     }
 
     /**
@@ -140,10 +148,43 @@ public class Index extends javax.swing.JFrame {
         // TODO add your handling code here:
         String nombreUsuario = txtUsername.getText();
         String password = txtPassword.getText();
-        
-        
+        String pswDB = "";
+       try{
+            ResultSet resultadoBusqueda = BuscarUsuario(nombreUsuario);
+
+            if(resultadoBusqueda != null){
+                while(resultadoBusqueda.next()){
+                    pswDB = resultadoBusqueda.getString(2);
+                }
+            }
+            if(TeachMe.encripta(pswDB, 1).equals(password)){
+                System.out.println("Si son iguales");
+            }
+            else{
+                System.out.println("No concuerdan");
+            }
+       }
+       catch(SQLException e){
+           
+       }
     }//GEN-LAST:event_btnLoginActionPerformed
 
+    public ResultSet BuscarUsuario(String nom_usuario){
+        try{
+            Connection con = null;
+            con = getConection();
+            PreparedStatement ps;
+            ResultSet res;
+            String query = "SELECT username,password FROM usuario WHERE username = '" + nom_usuario + "'";
+            ps = (PreparedStatement) con.prepareStatement(query);
+            
+            ResultSet result = ps.executeQuery();
+            return result;
+        }catch(SQLException e){
+            System.out.println(e);
+            return null;
+        }
+    }
     /**
      * @param args the command line arguments
      */

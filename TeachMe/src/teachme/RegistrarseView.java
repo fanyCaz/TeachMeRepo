@@ -28,8 +28,6 @@ public class RegistrarseView extends javax.swing.JFrame {
     ChangeListener changeListener = new ChangeListener() {
       @Override
       public void stateChanged(ChangeEvent changEvent) {
-       // AbstractButton aButton = (AbstractButton)changEvent.getSource();
-       // ButtonModel aModel = aButton.getModel();
        boolean selected = radioAlumno.isSelected();
        if(selected){
             txtSemestre.setVisible(true);
