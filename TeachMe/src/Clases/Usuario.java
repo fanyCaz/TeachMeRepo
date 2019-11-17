@@ -10,9 +10,11 @@ package Clases;
  * @author estef
  */
 public class Usuario {
-    String nombre, apPaterno, apMaterno, username, password;
+    public String nombre, apPaterno, apMaterno, username, password;
 
-    public Usuario() {}
+    public Usuario() {
+    
+    }
 
     public String getNombre() {
         return nombre;
