@@ -9,10 +9,62 @@ package Clases;
  *
  * @author estef
  */
-public class Alumno {
+public class Alumno extends Usuario{
+
+    
     int semestre, id_usuario;
 
     public Alumno(){}
+    
+    @Override
+    public String getNombre() {
+        return nombre;
+    }
+
+    @Override
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    @Override
+    public String getApPaterno() {
+        return apPaterno;
+    }
+
+    @Override
+    public void setApPaterno(String apPaterno) {
+        this.apPaterno = apPaterno;
+    }
+
+    @Override
+    public String getApMaterno() {
+        return apMaterno;
+    }
+
+    @Override
+    public void setApMaterno(String apMaterno) {
+        this.apMaterno = apMaterno;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public void setPassword(String password) {
+        this.password = password;
+    }
     
     public int getSemestre() {
         return semestre;

@@ -65,5 +65,8 @@ public class Usuario {
         this.password = password;
     }
     
+    public String getNombreCompleto(){
+        return nombre + " " + apPaterno + " " + apMaterno;
+    }
     
 }

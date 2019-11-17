@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package teachme;
+import Clases.Alumno;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import static teachme.TeachMe.getConection;
@@ -12,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import validation.validar2;
 import Clases.Usuario;
+import static teachme.TeachMe.BuscarAlumno;
+import static teachme.TeachMe.BuscarTipoUsuario;
 /**
  *
  * @author estef
@@ -46,6 +49,7 @@ public class Index extends javax.swing.JFrame {
         txtUsername = new javax.swing.JTextField();
         txtRegistrar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -140,9 +144,18 @@ public class Index extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 140, 520, 530));
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/asesor/imagenes/btnsalir.png"))); // NOI18N
+        jButton1.setToolTipText("");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 670, 110, 50));
+
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/validation/fondo1.png"))); // NOI18N
         jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1230, 720));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 1230, 720));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -161,26 +174,38 @@ public class Index extends javax.swing.JFrame {
         String password = txtPassword.getText();
         String pswDB = "";
         String nombreDB="",apellidoDB="",apellidoMDB="",usernameDB="";
-            //ResultSet resultadoBusqueda = BuscarUsuario(nombreUsuario);
-                Usuario usuarioLog= BuscarUsuario(nombreUsuario);
-                //System.out.println(usuarioLog.getNombre());
-                String encriptado = TeachMe.encripta(password, 2);
-                //Desencripta el password y lo compara con el que puso el usuario
-                if(encriptado.equals(usuarioLog.getPassword())){
-                    System.out.println("Si son iguales");//esta imprimiendo lo encriptado
-                    
-                    interfaz IAsesor = new interfaz(usuarioLog);
-                    IAsesor.setVisible(true);
-                    this.setVisible(false);
-                }
-                else{
-                    lblError.setText("El password es incorrecto, intenta de nuevo");
-                    System.out.println("No concuerdan");
-                }
-            
-            
-       
+        //ResultSet resultadoBusqueda = BuscarUsuario(nombreUsuario);
+        Usuario usuarioLog= BuscarUsuario(nombreUsuario);
+        //System.out.println(usuarioLog.getNombre());
+        String encriptado = TeachMe.encripta(password, 2);
+        //Desencripta el password y lo compara con el que puso el usuario
+        if(encriptado.equals(usuarioLog.getPassword())){
+            System.out.println("Si son iguales");//esta imprimiendo lo encriptado
+            int tipo = BuscarTipoUsuario(usuarioLog.getId());
+            System.out.println("tipo " + tipo);
+            if(tipo == 1){
+                
+                interfaz IAsesor = new interfaz(usuarioLog);
+                IAsesor.setVisible(true);
+            }
+            else{
+                Alumno alumno = BuscarAlumno(usuarioLog.getId());
+                UserDashboard userDashboard = new UserDashboard(alumno);
+                userDashboard.setVisible(true);
+            }
+            this.setVisible(false);
+        }
+        else{
+            lblError.setText("El password es incorrecto, intenta de nuevo");
+            System.out.println("No concuerdan");
+        }
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        System.exit(0);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     
     /**
@@ -220,6 +245,7 @@ public class Index extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

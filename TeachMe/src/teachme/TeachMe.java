@@ -5,6 +5,7 @@
  */
 package teachme;
 
+import Clases.Alumno;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import java.sql.DriverManager;
@@ -63,46 +64,33 @@ public class TeachMe {
         return con;
     }
     
-//    public static int BuscarTipoUsuario(int id){
-        
-//        
-//        try{
-//            Connection con;
-//            PreparedStatement ps;
-//            ResultSet res;
-//            con = getConection();
-//            String query = "SELECT * FROM usuario INNER JOIN asesores ON usuario.id = asesores.id_usuario WHERE asesores.id_usuario = ";
-//            //ps = (PreparedStatement) con.createStatement("");
-//            ps = (PreparedStatement) con.prepareStatement("SELECT * FROM usuario WHERE username =?");
-//            ps.setString(1, nom_usuario);
-//            res = ps.executeQuery();
-//            if(res.next() == false){
-//                System.out.println("No existe");
-//                return null;
-//            }
-//            if(res.first()){
-//                pswDB = res.getString(6);
-//                id = res.getInt(1);
-//                nombreDB= res.getString(2);
-//                apellidoDB = res.getString(3);
-//                apellidoMDB = res.getString(4);
-//                usernameDB = res.getString(5);
-//                buscado.setNombre(nombreDB);
-//                buscado.setApPaterno(apellidoDB);
-//                buscado.setApMaterno(apellidoMDB);
-//                buscado.setUsername(usernameDB);
-//                buscado.setPassword(pswDB);
-//                buscado.setId(id);
-//            }
-//            //System.out.println(buscado.getApPaterno() + "paterno");
-//            res.close();
-//            ps.close();
-//            return buscado;
-//        }catch(SQLException e){
-//            System.out.println(e);
-//            return null;
-//        }
-//    }
+    public static int BuscarTipoUsuario(int id){
+        int result;
+        try{
+            Connection con;
+            PreparedStatement ps;
+            ResultSet res;
+            con = getConection();
+            String query = "SELECT asesores.id FROM usuario INNER JOIN asesores ON usuario.id = asesores.id_usuario WHERE asesores.id_usuario = ?";
+            //ps = (PreparedStatement) con.createStatement("");
+            ps = (PreparedStatement) con.prepareStatement(query);
+            ps.setInt(1, id);
+            res = ps.executeQuery();
+            //Si trae datos, entonces es un asesor
+            if(res.first()){
+                result = 1;
+            }//Si viene vacio entonces es un alumno
+            else{
+                result = 0;
+            }
+            res.close();
+            ps.close();
+            return result;
+        }catch(SQLException e){
+            System.out.println(e);
+            return 0;
+        }
+    }
 //    
 //    public static ResultSet BuscarUsuarioId(int id){
 //       
@@ -130,6 +118,48 @@ public class TeachMe {
                 nombre= res.getString(2);
                 buscado.setNombre(nombre);
                 buscado.setId(id);
+            }
+            //System.out.println(buscado.getApPaterno() + "paterno");
+            res.close();
+            ps.close();
+            return buscado;
+        }catch(SQLException e){
+            System.out.println(e);
+            return null;
+        }
+    }
+    
+    public static Alumno BuscarAlumno(int id){
+        String pswDB="", nombreDB="", apellidoDB, apellidoMDB, usernameDB ;
+        int semestre;
+        Alumno buscado = new Alumno();
+        try{
+            Connection con;
+            PreparedStatement ps;
+            ResultSet res;
+            con = getConection();
+            String query = "SELECT alumnos.id, alumnos.semestre ,usuario.nombre, usuario.ap_paterno, usuario.ap_materno, usuario.username FROM usuario INNER JOIN alumnos ON usuario.id = alumnos.id_usuario WHERE alumnos.id_usuario = ?";
+            //ps = (PreparedStatement) con.createStatement("");
+            ps = (PreparedStatement) con.prepareStatement(query);
+            ps.setInt(1, id);
+            res = ps.executeQuery();
+            if(res.next() == false){
+                System.out.println("No existe");
+                return null;
+            }
+            if(res.first()){
+                id = res.getInt(1);
+                semestre = res.getInt(2);
+                nombreDB= res.getString(3);
+                apellidoDB = res.getString(4);
+                apellidoMDB = res.getString(5);
+                usernameDB = res.getString(6);
+                buscado.setId(id);
+                buscado.setSemestre(semestre);
+                buscado.setNombre(nombreDB);
+                buscado.setApPaterno(apellidoDB);
+                buscado.setApMaterno(apellidoMDB);
+                buscado.setUsername(usernameDB);
             }
             //System.out.println(buscado.getApPaterno() + "paterno");
             res.close();
