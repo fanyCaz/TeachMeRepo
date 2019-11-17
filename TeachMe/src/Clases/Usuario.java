@@ -11,6 +11,15 @@ package Clases;
  */
 public class Usuario {
     public String nombre, apPaterno, apMaterno, username, password;
+    int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Usuario() {
     

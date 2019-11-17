@@ -9,7 +9,7 @@ import teachme.TeachMe.*;
 import static teachme.TeachMe.BuscarUsuario;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import Clases.Asesor;
 
 /**
  *
@@ -19,28 +19,14 @@ public class interfaz extends javax.swing.JFrame {
 
     /**
      * Creates new form interfaz
-     * @param username
+     * @param usuarioActual
      */
-    public interfaz(String username) {
+    public interfaz(Usuario usuarioActual) {
         initComponents();
-        Usuario usuarioActual = new Usuario();
         int id;
-       
-//       try{
-//            while(resultadoBusqueda.next()){
-//                id = resultadoBusqueda.getInt(1);
-//                usuarioActual.setNombre(resultadoBusqueda.getString(2));
-//                usuarioActual.setApPaterno(resultadoBusqueda.getString(3));
-//                usuarioActual.setApMaterno(resultadoBusqueda.getString(4));
-//                usuarioActual.setUsername(username);
-//                lblNombre.setText(usuarioActual.getNombre());
-//                System.out.println(resultadoBusqueda.getString(2)+ "exist");
-//            }
-//       }catch(SQLException e){
-//           System.out.println(e);
-//       }
+        
 
-       
+       lblNombre.setText(usuarioActual.getNombre() + " " + usuarioActual.getApPaterno());
     }
 
     private interfaz() {
@@ -60,7 +46,7 @@ public class interfaz extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         lblNombre = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        lblMateria = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -78,7 +64,7 @@ public class interfaz extends javax.swing.JFrame {
 
         lblNombre.setText("User");
 
-        jLabel3.setText("jLabel3");
+        lblMateria.setText("jLabel3");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -90,7 +76,7 @@ public class interfaz extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
+                            .addComponent(lblMateria)
                             .addComponent(lblNombre))
                         .addGap(0, 90, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -103,7 +89,7 @@ public class interfaz extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblNombre)
                 .addGap(36, 36, 36)
-                .addComponent(jLabel3)
+                .addComponent(lblMateria)
                 .addContainerGap(312, Short.MAX_VALUE))
         );
 
@@ -185,9 +171,9 @@ public class interfaz extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblMateria;
     private javax.swing.JLabel lblNombre;
     // End of variables declaration//GEN-END:variables
 }

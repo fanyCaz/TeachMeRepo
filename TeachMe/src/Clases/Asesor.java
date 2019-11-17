@@ -9,7 +9,7 @@ package Clases;
  *
  * @author estef
  */
-public class Asesor {
+public class Asesor extends Usuario{
     double calificacion;
     int id_usuario;
 

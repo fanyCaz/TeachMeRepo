@@ -164,16 +164,12 @@ public class Index extends javax.swing.JFrame {
             //ResultSet resultadoBusqueda = BuscarUsuario(nombreUsuario);
                 Usuario usuarioLog= BuscarUsuario(nombreUsuario);
                 //System.out.println(usuarioLog.getNombre());
-                String encriptado = TeachMe.encripta(usuarioLog.getPassword(), 2);
+                String encriptado = TeachMe.encripta(password, 2);
                 //Desencripta el password y lo compara con el que puso el usuario
-                if(encriptado.equals(pswDB)){
+                if(encriptado.equals(usuarioLog.getPassword())){
                     System.out.println("Si son iguales");//esta imprimiendo lo encriptado
-                    Usuario usuarioInicio = new Usuario();
-                    usuarioInicio.setNombre(nombreDB);
-                    usuarioInicio.setApPaterno(apellidoDB);
-                    usuarioInicio.setApMaterno(apellidoMDB);
-                    usuarioInicio.setUsername(usernameDB);
-                    interfaz IAsesor = new interfaz(usernameDB);
+                    
+                    interfaz IAsesor = new interfaz(usuarioLog);
                     IAsesor.setVisible(true);
                     this.setVisible(false);
                 }

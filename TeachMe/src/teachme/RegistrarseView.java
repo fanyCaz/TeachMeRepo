@@ -15,10 +15,11 @@ import validation.validar2;
 import Clases.Usuario;
 import Clases.Asesor;
 import Clases.Alumno;
+import Clases.Materia;
 import com.mysql.jdbc.Statement;
-import java.awt.event.ActionListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import static teachme.TeachMe.BuscarMateria;
 /**
  *
  * @author estef
@@ -289,7 +290,7 @@ public class RegistrarseView extends javax.swing.JFrame {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
-        String nombre="",ap_paterno="",ap_materno="",nom_usuario="",nombre_result, password="";
+        String nombre="",ap_paterno="",ap_materno="",nom_usuario="",nombre_result, password="", materia="";
         String pswEncriptado;
         int idGuardado,semestre=0;
         nombre_result = null;
@@ -303,6 +304,9 @@ public class RegistrarseView extends javax.swing.JFrame {
         tipoUsuario = ( radioAsesor.isSelected() ) ? 1 : 2; //1 es Asesor, 2 es Alumno, este es un if ternario
         if(tipoUsuario == 2){
             semestre = Integer.parseInt(txtSemestre.getText());
+        }
+        else{
+            materia = cmbmaterias.getSelectedItem().toString();
         }
         Usuario nuevoUser = new Usuario();
         nuevoUser.setNombre(nombre);
@@ -335,7 +339,7 @@ public class RegistrarseView extends javax.swing.JFrame {
                 ps.setString(2, nuevoUser.getApPaterno());
                 ps.setString(3, nuevoUser.getApMaterno());
                 ps.setString(4, nuevoUser.getUsername());
-                ps.setString(5, nuevoUser.getPassword());
+                ps.setString(5, pswEncriptado);
                 ps.executeUpdate();
                 ResultSet affected = ps.getGeneratedKeys(); //Para ver el id con el que se guardo este usuario
                 if(affected.next()){
@@ -349,7 +353,17 @@ public class RegistrarseView extends javax.swing.JFrame {
                         ps = (PreparedStatement) con.prepareStatement(q2, Statement.RETURN_GENERATED_KEYS); /* El nombre de la tabla*/
                         ps.setInt(1, nuevoAsesor.getId_usuario());
                         ps.setDouble(2, nuevoAsesor.getCalificacion());
-                        ps.execute();
+                        ps.executeUpdate();
+                        ResultSet affectedAsesor = ps.getGeneratedKeys();
+                        if(affectedAsesor.next()){
+                            int idAsesor = affectedAsesor.getInt(1);
+                            Materia materiaSeleccionada = BuscarMateria(materia);
+                            q2 = "INSERT INTO materiasasesor (id_asesor, id_materia) VALUES(?,?)";
+                            ps = (PreparedStatement) con.prepareStatement(q2, Statement.RETURN_GENERATED_KEYS); /* El nombre de la tabla*/
+                            ps.setInt(1, idAsesor);
+                            ps.setInt(2, materiaSeleccionada.getId());
+                            ps.executeUpdate();
+                        }
                     }
                     //Si el usuario es estudiante
                     else{
