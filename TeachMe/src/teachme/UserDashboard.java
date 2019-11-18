@@ -62,6 +62,11 @@ public class UserDashboard extends javax.swing.JFrame {
         });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/asesor/imagenes/btnbuscar.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         lblNombre.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         lblNombre.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -200,6 +205,11 @@ public class UserDashboard extends javax.swing.JFrame {
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEditarActionPerformed
+    //Boton para buscar asesores
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
