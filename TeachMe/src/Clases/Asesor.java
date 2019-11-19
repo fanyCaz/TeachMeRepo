@@ -13,6 +13,46 @@ public class Asesor extends Usuario{
     double calificacion;
     int id_usuario;
 
+    @Override
+    public String getNombre() {
+        return nombre;
+    }
+
+    @Override
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    @Override
+    public String getApPaterno() {
+        return apPaterno;
+    }
+
+    @Override
+    public void setApPaterno(String apPaterno) {
+        this.apPaterno = apPaterno;
+    }
+
+    @Override
+    public String getApMaterno() {
+        return apMaterno;
+    }
+
+    @Override
+    public void setApMaterno(String apMaterno) {
+        this.apMaterno = apMaterno;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public Asesor(){}
     
     public double getCalificacion() {

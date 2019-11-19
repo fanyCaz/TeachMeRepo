@@ -5,6 +5,19 @@
  */
 package teachme;
 
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import Clases.Asesor;
+import Clases.Horario;
+import Clases.Materia;
+import javax.swing.table.DefaultTableModel;
+import static teachme.TeachMe.BuscarHorario;
+import static teachme.TeachMe.getConection;
+import static teachme.TeachMe.getTabla;
+import static teachme.TeachMe.BuscarMateria;
 /**
  *
  * @author estef
@@ -32,7 +45,8 @@ public class Busqueda extends javax.swing.JFrame {
         cmbHorario = new javax.swing.JComboBox<>();
         btnBuscar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        scrollAsesores = new javax.swing.JScrollPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblAsesores = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -49,6 +63,19 @@ public class Busqueda extends javax.swing.JFrame {
 
         jLabel1.setText("Aquí aparecerán los asesores que se ajusten a tu búsqueda");
 
+        tblAsesores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tblAsesores);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -64,12 +91,11 @@ public class Busqueda extends javax.swing.JFrame {
                                 .addComponent(cmbHorario, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnBuscar))
-                            .addComponent(jLabel1))
-                        .addGap(0, 223, Short.MAX_VALUE))
+                            .addComponent(jLabel1)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(scrollAsesores)))
-                .addContainerGap())
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 738, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -84,9 +110,9 @@ public class Busqueda extends javax.swing.JFrame {
                         .addComponent(cmbHorario)))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollAsesores, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -95,12 +121,11 @@ public class Busqueda extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -110,11 +135,54 @@ public class Busqueda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        String materia = cmbMateria.getSelectedItem().toString();
-        String hora = cmbHorario.getSelectedItem().toString();
+        String nommateria = cmbMateria.getSelectedItem().toString();
+        int idHora;
+        if(cmbHorario.getSelectedItem().equals("Selecciona...")){
+            idHora = 0;
+        }
+        else{
+            String hora = cmbHorario.getSelectedItem().toString();
+            Horario horario = BuscarHorario(hora);
+            idHora = horario.getId();
+        }
+        Materia materia = BuscarMateria(nommateria);
         
+        BuscarAsesor(materia.getId(),idHora);
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    
+    private void BuscarAsesor(int idMateria, int idHora){
+        
+        DefaultTableModel modelo = new DefaultTableModel();
+        //Asesor arrayAsesores[]=new Asesor[3];
+        Connection con;
+        PreparedStatement ps;
+        ResultSet res;
+        con = getConection();
+        String query = " SELECT  usuario.nombre, usuario.ap_paterno FROM materiasasesor LEFT JOIN asesores ON materiasasesor.id_asesor = asesores.id INNER JOIN usuario ON asesores.id_usuario = usuario.id ";
+        if(idHora > 0){
+            query += " LEFT JOIN horariosasesor ON horariosasesor.id_asesor = asesores.id";
+            query += " WHERE materiasasesor.id_materia =" + idMateria + "  AND horariosasesor.id_horario = "+idHora;
+        }
+        else{
+            query += " WHERE materiasasesor.id_materia ="+ idMateria;
+        }
+        res = getTabla(query);
+        modelo.setColumnIdentifiers(new Object[]{"Nombre","Apellido"});
+        try{
+            if(res.first() == false){
+
+            }
+            while(res.next()){
+                modelo.addRow(new Object[]{res.getString(1), res.getString(2)});
+            }
+            tblAsesores.setModel(modelo);
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        //res = ps.executeQuery();
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -156,6 +224,7 @@ public class Busqueda extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmbMateria;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane scrollAsesores;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblAsesores;
     // End of variables declaration//GEN-END:variables
 }

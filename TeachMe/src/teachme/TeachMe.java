@@ -6,6 +6,8 @@
 package teachme;
 
 import Clases.Alumno;
+import Clases.Asesor;
+import Clases.Horario;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import java.sql.DriverManager;
@@ -13,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import Clases.Usuario;
 import Clases.Materia;
+import com.mysql.jdbc.Statement;
 /**
  *
  * @author estef
@@ -64,6 +67,19 @@ public class TeachMe {
         return con;
     }
     
+    public static ResultSet getTabla(String Query){
+        Connection con = getConection();
+        Statement st ;
+        ResultSet datos = null;
+        try{
+            st = (Statement) con.createStatement();
+            datos = st.executeQuery(Query);
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        return datos;
+    }
+    
     public static int BuscarTipoUsuario(int id){
         int result;
         try{
@@ -91,11 +107,6 @@ public class TeachMe {
             return 0;
         }
     }
-//    
-//    public static ResultSet BuscarUsuarioId(int id){
-//       
-//    }
-//    
     
     public static Materia BuscarMateria(String nomMateria){
         String nombre; int id;
@@ -117,6 +128,38 @@ public class TeachMe {
                 id = res.getInt(1);
                 nombre= res.getString(2);
                 buscado.setNombre(nombre);
+                buscado.setId(id);
+            }
+            //System.out.println(buscado.getApPaterno() + "paterno");
+            res.close();
+            ps.close();
+            return buscado;
+        }catch(SQLException e){
+            System.out.println(e);
+            return null;
+        }
+    }
+    
+    public static Horario BuscarHorario(String hora){
+        String horadb; int id;
+        Horario buscado = new Horario();
+        try{
+            Connection con;
+            PreparedStatement ps;
+            ResultSet res;
+            con = getConection();
+            String query = "SELECT * FROM horarios WHERE hora =?";
+            ps = (PreparedStatement) con.prepareStatement(query);
+            ps.setString(1, hora);
+            res = ps.executeQuery();
+            if(res.next() == false){
+                System.out.println("No existe");
+                return null;
+            }
+            if(res.first()){
+                id = res.getInt(1);
+                horadb= res.getString(2);
+                buscado.setHora(horadb);
                 buscado.setId(id);
             }
             //System.out.println(buscado.getApPaterno() + "paterno");
