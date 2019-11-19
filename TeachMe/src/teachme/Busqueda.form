@@ -59,6 +59,8 @@
                               </Group>
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="lblError" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
@@ -77,6 +79,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="cmbMateria" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblError" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
@@ -121,8 +124,8 @@
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="14">
                 <StringItem index="0" value="Selecciona..."/>
-                <StringItem index="1" value="8:00"/>
-                <StringItem index="2" value="9:00"/>
+                <StringItem index="1" value="08:00"/>
+                <StringItem index="2" value="09:00"/>
                 <StringItem index="3" value="10:00"/>
                 <StringItem index="4" value="11:00"/>
                 <StringItem index="5" value="12:00"/>
@@ -175,6 +178,11 @@
             </Component>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JLabel" name="lblError">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Por favor, selecciona una materia"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

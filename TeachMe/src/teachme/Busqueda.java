@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import Clases.Asesor;
 import Clases.Horario;
 import Clases.Materia;
+import java.awt.Color;
 import javax.swing.table.DefaultTableModel;
 import static teachme.TeachMe.BuscarHorario;
 import static teachme.TeachMe.getConection;
@@ -47,12 +48,13 @@ public class Busqueda extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAsesores = new javax.swing.JTable();
+        lblError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         cmbMateria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona...", "Sistemas Digitales", "Programacion Estructurada", "Física I", "Física II", "Física III", "Física IV", "Química General", "Matematicas I", "Matematicas II", "Matematicas III", "Matematicas IV" }));
 
-        cmbHorario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona...", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00" }));
+        cmbHorario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona...", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00" }));
 
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -76,6 +78,8 @@ public class Busqueda extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblAsesores);
 
+        lblError.setText("Por favor, selecciona una materia");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -91,7 +95,9 @@ public class Busqueda extends javax.swing.JFrame {
                                 .addComponent(cmbHorario, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnBuscar))
-                            .addComponent(jLabel1)))
+                            .addComponent(jLabel1))
+                        .addGap(18, 18, 18)
+                        .addComponent(lblError))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 738, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -104,7 +110,8 @@ public class Busqueda extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(cmbMateria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnBuscar))
+                        .addComponent(btnBuscar)
+                        .addComponent(lblError))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addComponent(cmbHorario)))
@@ -137,7 +144,7 @@ public class Busqueda extends javax.swing.JFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String nommateria = cmbMateria.getSelectedItem().toString();
         int idHora;
-        if(cmbHorario.getSelectedItem().equals("Selecciona...")){
+        if(cmbHorario.getSelectedItem().toString().equals("Selecciona...")){
             idHora = 0;
         }
         else{
@@ -145,9 +152,13 @@ public class Busqueda extends javax.swing.JFrame {
             Horario horario = BuscarHorario(hora);
             idHora = horario.getId();
         }
-        Materia materia = BuscarMateria(nommateria);
-        
-        BuscarAsesor(materia.getId(),idHora);
+        if( cmbMateria.getSelectedItem().toString().equals("Selecciona...")){
+            lblError.setForeground(Color.red);
+        }
+        else{
+            Materia materia = BuscarMateria(nommateria);
+            BuscarAsesor(materia.getId(),idHora);
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     
@@ -170,14 +181,17 @@ public class Busqueda extends javax.swing.JFrame {
         res = getTabla(query);
         modelo.setColumnIdentifiers(new Object[]{"Nombre","Apellido"});
         try{
-            if(res.first() == false){
-
+            if(res == null){
+                modelo.addRow(new Object[]{"No hay usuarios con este servicio","Sin usau"});
             }
-            while(res.next()){
-                modelo.addRow(new Object[]{res.getString(1), res.getString(2)});
+            else{
+                while(res.next()){
+                    modelo.addRow(new Object[]{res.getString(1), res.getString(2)});
+                }
+                tblAsesores.setModel(modelo);
             }
-            tblAsesores.setModel(modelo);
-        }catch(Exception e){
+        }
+        catch(Exception e){
             System.out.println(e);
         }
         //res = ps.executeQuery();
@@ -225,6 +239,7 @@ public class Busqueda extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblError;
     private javax.swing.JTable tblAsesores;
     // End of variables declaration//GEN-END:variables
 }
