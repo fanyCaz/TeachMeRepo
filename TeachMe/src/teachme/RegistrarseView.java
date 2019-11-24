@@ -47,6 +47,7 @@ public class RegistrarseView extends javax.swing.JFrame {
     
     public RegistrarseView() {
         initComponents();
+        lblusuarioex.setVisible(false);
         validar2 v=new validar2();
         txtSemestre.setVisible(false);
         cmbmaterias.setVisible(false);
@@ -82,7 +83,6 @@ public class RegistrarseView extends javax.swing.JFrame {
         txtNomUser = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        lblerror = new javax.swing.JLabel();
         radioAlumno = new javax.swing.JRadioButton();
         lblError = new javax.swing.JLabel();
         txtpsw = new javax.swing.JTextField();
@@ -90,16 +90,17 @@ public class RegistrarseView extends javax.swing.JFrame {
         cmbmaterias = new javax.swing.JComboBox<>();
         lblsem = new javax.swing.JLabel();
         lblmat = new javax.swing.JLabel();
+        lblusuarioex = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        lblerror = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(167, 167, 238));
         setLocation(new java.awt.Point(50, 50));
         setMinimumSize(new java.awt.Dimension(1000, 580));
         setPreferredSize(new java.awt.Dimension(1100, 580));
-        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(153, 224, 197));
@@ -161,6 +162,9 @@ public class RegistrarseView extends javax.swing.JFrame {
 
         lblmat.setText("Materia que impartes");
 
+        lblusuarioex.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        lblusuarioex.setText("Este usuario ya existe");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -168,15 +172,11 @@ public class RegistrarseView extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(cmbmaterias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(398, 398, 398)
-                                .addComponent(lblsem)))
-                        .addGap(122, 122, 122)
-                        .addComponent(lblerror, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap()
+                        .addComponent(cmbmaterias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(398, 398, 398)
+                        .addComponent(lblsem))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(761, 761, 761)
                         .addComponent(lblError))
@@ -217,7 +217,10 @@ public class RegistrarseView extends javax.swing.JFrame {
                                 .addComponent(txtpsw, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(135, 135, 135)
-                        .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(214, 214, 214)
+                        .addComponent(lblusuarioex, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -243,39 +246,35 @@ public class RegistrarseView extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtpsw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblerror, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(93, 93, 93))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(radioAlumno, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(radioAsesor, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblError)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblsem)
-                            .addComponent(lblmat, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmbmaterias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                        .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35))))
+                    .addComponent(radioAlumno, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(radioAsesor, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblError)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblsem)
+                    .addComponent(lblmat, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbmaterias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblusuarioex, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         lblsem.getAccessibleContext().setAccessibleName("lblSemestre");
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 70, 530, 430));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 70, 530, 430));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/asesor/imagenes/fondo1.png"))); // NOI18N
         jLabel9.setMaximumSize(new java.awt.Dimension(700, 800));
         jLabel9.setMinimumSize(new java.awt.Dimension(700, 800));
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 430));
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 1140, 430));
 
         jLabel7.setFont(new java.awt.Font("Verdana", 0, 24)); // NOI18N
         jLabel7.setText("REGISTRATE");
@@ -288,6 +287,7 @@ public class RegistrarseView extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 80, 70));
+        getContentPane().add(lblerror, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 390, 616, 21));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -344,10 +344,10 @@ public class RegistrarseView extends javax.swing.JFrame {
                 }
             }
             if(nombre_result != null && nombre_result.equals(nom_usuario)){
-                lblerror.setText("Este nombre de usuario ya existe");
+                lblusuarioex.setVisible(true);
             }
             else{
-                lblerror.setText("Si se puede registrar");
+                lblusuarioex.setVisible(false);
                 pswEncriptado =TeachMe.encripta(nuevoUser.getPassword(), 2);
                 query = "INSERT INTO usuario (nombre,ap_paterno,ap_materno,username, password) VALUES (?,?,?,?,?)";
                 ps = (PreparedStatement) con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS); /* El nombre de la tabla*/
@@ -495,6 +495,7 @@ public class RegistrarseView extends javax.swing.JFrame {
     private javax.swing.JLabel lblerror;
     private javax.swing.JLabel lblmat;
     private javax.swing.JLabel lblsem;
+    private javax.swing.JLabel lblusuarioex;
     private javax.swing.JRadioButton radioAlumno;
     private javax.swing.JRadioButton radioAsesor;
     private javax.swing.JTextField txtApMaterno;
