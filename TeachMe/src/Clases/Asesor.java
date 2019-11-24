@@ -11,6 +11,16 @@ package Clases;
  */
 public class Asesor extends Usuario{
     double calificacion;
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
     int id_usuario;
 
     @Override

@@ -201,8 +201,10 @@ public class Busqueda extends javax.swing.JFrame {
     private void tblAsesoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAsesoresMouseClicked
         // TODO add your handling code here:
         clickTabla = this.tblAsesores.rowAtPoint(evt.getPoint());
-        String codigo = "" + tblAsesores.getValueAt(clickTabla, 0);
+        int id = (int)tblAsesores.getValueAt(clickTabla, 0);
         String nombre = ""+tblAsesores.getValueAt(clickTabla, 1);
+        String apellido = ""+tblAsesores.getValueAt(clickTabla, 2);
+        
         
         int column = tblAsesores.getColumnModel().getColumnIndexAtX(evt.getX());
         int row = evt.getY()/tblAsesores.getRowHeight();
@@ -217,7 +219,7 @@ public class Busqueda extends javax.swing.JFrame {
                     int confirm = JOptionPane.showConfirmDialog(null, "Obtener más información", "Confirmar", JOptionPane.OK_CANCEL_OPTION);
                     if(JOptionPane.OK_OPTION == confirm){
                         System.out.println("confirmadoo");
-                        System.out.println(nombre);
+                        
                     }
                     
                     //EVENTOS ELIMINAR
@@ -237,7 +239,7 @@ public class Busqueda extends javax.swing.JFrame {
         PreparedStatement ps;
         ResultSet res;
         con = getConection();
-        String query = " SELECT  usuario.nombre, usuario.ap_paterno FROM materiasasesor LEFT JOIN asesores ON materiasasesor.id_asesor = asesores.id INNER JOIN usuario ON asesores.id_usuario = usuario.id ";
+        String query = " SELECT DISTINCT(asesores.id_usuario), CONCAT(usuario.nombre, '  ',usuario.ap_paterno ) AS nombre FROM materiasasesor LEFT JOIN asesores ON materiasasesor.id_asesor = asesores.id INNER JOIN usuario ON asesores.id_usuario = usuario.id LEFT JOIN horariosasesor ON horariosasesor.id_asesor = asesores.id ";
         if(idHora > 0){
             query += " LEFT JOIN horariosasesor ON horariosasesor.id_asesor = asesores.id";
             query += " WHERE materiasasesor.id_materia =" + idMateria + "  AND horariosasesor.id_horario = "+idHora;
@@ -246,18 +248,15 @@ public class Busqueda extends javax.swing.JFrame {
             query += " WHERE materiasasesor.id_materia ="+ idMateria;
         }
         res = getTabla(query);
-        modelo.setColumnIdentifiers(new Object[]{"Nombre","Apellido", "Click"});
+        modelo.setColumnIdentifiers(new Object[]{"No.","Nombre", "Click"});
         try{
             if(res == null){
                 modelo.addRow(new Object[]{"No hay usuarios con este servicio","Sin usau"});
             }
             else{
                 while(res.next()){
-                modelo.addRow(new Object[]{res.getString(1), res.getString(2), guardar});
-                }               
-                 
-                
-
+                modelo.addRow(new Object[]{res.getInt(1),res.getString(2), guardar});
+                }
                 tblAsesores.setModel(modelo);                
                 tblAsesores.setPreferredScrollableViewportSize(tblAsesores.getPreferredSize());
             }
