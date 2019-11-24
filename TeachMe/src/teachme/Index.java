@@ -5,6 +5,7 @@
  */
 package teachme;
 import Clases.Alumno;
+import Clases.Asesor;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import static teachme.TeachMe.getConection;
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 import validation.validar2;
 import Clases.Usuario;
 import static teachme.TeachMe.BuscarAlumno;
+import static teachme.TeachMe.BuscarAsesor;
 import static teachme.TeachMe.BuscarTipoUsuario;
 /**
  *
@@ -184,8 +186,8 @@ public class Index extends javax.swing.JFrame {
             int tipo = BuscarTipoUsuario(usuarioLog.getId());
             System.out.println("tipo " + tipo);
             if(tipo == 1){
-                
-                interfaz IAsesor = new interfaz(usuarioLog);
+                Asesor asesor = BuscarAsesor(usuarioLog.getId());
+                interfaz IAsesor = new interfaz(asesor);
                 IAsesor.setVisible(true);
             }
             else{

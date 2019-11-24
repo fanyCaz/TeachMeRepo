@@ -172,6 +172,48 @@ public class TeachMe {
         }
     }
     
+    public static Asesor BuscarAsesor(int id){
+        String pswDB="", nombreDB="", apellidoDB, apellidoMDB, usernameDB ;
+        double calificacion;
+        Asesor buscado = new Asesor();
+        try{
+            Connection con;
+            PreparedStatement ps;
+            ResultSet res;
+            con = getConection();
+            String query = "SELECT asesores.id, asesores.calificacion ,usuario.nombre, usuario.ap_paterno, usuario.ap_materno, usuario.username FROM usuario INNER JOIN asesores ON usuario.id = asesores.id_usuario WHERE  asesores.id_usuario = ?";
+            //ps = (PreparedStatement) con.createStatement("");
+            ps = (PreparedStatement) con.prepareStatement(query);
+            ps.setInt(1, id);
+            res = ps.executeQuery();
+            if(res.next() == false){
+                System.out.println("No existe");
+                return null;
+            }
+            if(res.first()){
+                id = res.getInt(1);
+                calificacion = res.getDouble(2);
+                nombreDB= res.getString(3);
+                apellidoDB = res.getString(4);
+                apellidoMDB = res.getString(5);
+                usernameDB = res.getString(6);
+                buscado.setId(id);
+                buscado.setCalificacion(calificacion);
+                buscado.setNombre(nombreDB);
+                buscado.setApPaterno(apellidoDB);
+                buscado.setApMaterno(apellidoMDB);
+                buscado.setUsername(usernameDB);
+            }
+            //System.out.println(buscado.getApPaterno() + "paterno");
+            res.close();
+            ps.close();
+            return buscado;
+        }catch(SQLException e){
+            System.out.println(e);
+            return null;
+        }
+    }
+    
     public static Alumno BuscarAlumno(int id){
         String pswDB="", nombreDB="", apellidoDB, apellidoMDB, usernameDB ;
         int semestre;
