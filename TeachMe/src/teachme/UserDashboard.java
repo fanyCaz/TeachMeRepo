@@ -208,7 +208,7 @@ public class UserDashboard extends javax.swing.JFrame {
     //Boton para buscar asesores
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        Busqueda busqueda = new Busqueda();
+        Busqueda busqueda = new Busqueda(alumnoActual);
         busqueda.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed

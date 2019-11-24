@@ -309,11 +309,11 @@
                       <StringArray count="11">
                         <StringItem index="0" value="Sistemas Digitales"/>
                         <StringItem index="1" value="Programacion Estructurada"/>
-                        <StringItem index="2" value="F&#xed;sica I"/>
-                        <StringItem index="3" value="F&#xed;sica II"/>
-                        <StringItem index="4" value="F&#xed;sica III"/>
-                        <StringItem index="5" value="F&#xed;sica IV"/>
-                        <StringItem index="6" value="Qu&#xed;mica General"/>
+                        <StringItem index="2" value="Fisica I"/>
+                        <StringItem index="3" value="Fisica II"/>
+                        <StringItem index="4" value="Fisica III"/>
+                        <StringItem index="5" value="Fisica IV"/>
+                        <StringItem index="6" value="Quimica General"/>
                         <StringItem index="7" value="Matematicas I"/>
                         <StringItem index="8" value="Matematicas II"/>
                         <StringItem index="9" value="Matematicas III"/>

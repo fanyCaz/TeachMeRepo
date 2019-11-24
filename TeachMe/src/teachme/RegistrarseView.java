@@ -156,7 +156,7 @@ public class RegistrarseView extends javax.swing.JFrame {
         });
 
         cmbmaterias.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        cmbmaterias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sistemas Digitales", "Programacion Estructurada", "Física I", "Física II", "Física III", "Física IV", "Química General", "Matematicas I", "Matematicas II", "Matematicas III", "Matematicas IV" }));
+        cmbmaterias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sistemas Digitales", "Programacion Estructurada", "Fisica I", "Fisica II", "Fisica III", "Fisica IV", "Quimica General", "Matematicas I", "Matematicas II", "Matematicas III", "Matematicas IV" }));
 
         lblsem.setText("Semestre");
 

@@ -134,7 +134,7 @@ public class interfaz extends javax.swing.JFrame {
             }
         });
 
-        cmbmaterias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sistemas Digitales", "Programacion Estructurada", "Física I", "Física II", "Física III", "Física IV", "Química General", "Matematicas I", "Matematicas II", "Matematicas III", "Matematicas IV" }));
+        cmbmaterias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sistemas Digitales", "Programacion Estructurada", "Fisica I", "Fisica II", "Fisica III", "Fisica IV", "Quimica General", "Matematicas I", "Matematicas II", "Matematicas III", "Matematicas IV" }));
 
         btnAddmateria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/asesor/imagenes/btnsave.png"))); // NOI18N
         btnAddmateria.addActionListener(new java.awt.event.ActionListener() {
