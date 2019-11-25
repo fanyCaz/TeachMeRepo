@@ -18,6 +18,7 @@ import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import static teachme.TeachMe.BuscarAsesor;
 import static teachme.TeachMe.BuscarHorario;
 import static teachme.TeachMe.getConection;
 import static teachme.TeachMe.getTabla;
@@ -31,6 +32,7 @@ public class Busqueda extends javax.swing.JFrame {
     int clickTabla = 0;
     /**
      * Creates new form Busqueda
+     * @param alumno
      */
     public Busqueda(Alumno alumno) {
         alumnoBuscando = alumno;
@@ -115,40 +117,42 @@ public class Busqueda extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(202, 202, 202))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 804, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblError)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(cmbMateria, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                                .addComponent(cmbHorario, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(lblError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmbMateria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(20, 20, 20)
+                        .addComponent(cmbHorario, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblError)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmbMateria, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbHorario, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblError)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(cmbHorario, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                                    .addComponent(cmbMateria)))
+                            .addComponent(btnBuscar)))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
-                .addGap(67, 67, 67))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -165,7 +169,7 @@ public class Busqueda extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -187,7 +191,7 @@ public class Busqueda extends javax.swing.JFrame {
         }
         else{
             Materia materia = BuscarMateria(nommateria);
-            BuscarAsesor(materia.getId(),idHora);
+            BuscarAsesorPorMateria(materia.getId(),idHora);
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -219,7 +223,11 @@ public class Busqueda extends javax.swing.JFrame {
                     int confirm = JOptionPane.showConfirmDialog(null, "Obtener más información", "Confirmar", JOptionPane.OK_CANCEL_OPTION);
                     if(JOptionPane.OK_OPTION == confirm){
                         System.out.println("confirmadoo");
-                        
+                        Asesor asesor = BuscarAsesor(id);
+                        Materia mat = BuscarMateria( cmbMateria.getSelectedItem().toString() );
+                        creaSesion sesion = new creaSesion(asesor, alumnoBuscando, mat);
+                        sesion.setVisible(true);
+                        this.setVisible(false);
                     }
                     
                     //EVENTOS ELIMINAR
@@ -227,9 +235,9 @@ public class Busqueda extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_tblAsesoresMouseClicked
-
     
-    private void BuscarAsesor(int idMateria, int idHora){
+    
+    private void BuscarAsesorPorMateria(int idMateria, int idHora){
         tblAsesores.setDefaultRenderer(Object.class, new Renderizar());
         JButton guardar = new JButton("Seleccionar");
         guardar.setName("q");
@@ -239,13 +247,13 @@ public class Busqueda extends javax.swing.JFrame {
         PreparedStatement ps;
         ResultSet res;
         con = getConection();
-        String query = " SELECT DISTINCT(asesores.id_usuario), CONCAT(usuario.nombre, '  ',usuario.ap_paterno ) AS nombre FROM materiasasesor LEFT JOIN asesores ON materiasasesor.id_asesor = asesores.id INNER JOIN usuario ON asesores.id_usuario = usuario.id LEFT JOIN horariosasesor ON horariosasesor.id_asesor = asesores.id ";
+        String query = " SELECT DISTINCT(asesores.id_usuario), CONCAT(usuario.nombre, '  ',usuario.ap_paterno ) AS nombre FROM materiasasesor LEFT JOIN asesores ON materiasasesor.id_asesor = asesores.id INNER JOIN usuario ON asesores.id_usuario = usuario.id  LEFT JOIN horariosasesor ON horariosasesor.id_asesor = asesores.id ";
+            query += " WHERE horariosasesor.disponible = 1 ";
         if(idHora > 0){
-            query += " LEFT JOIN horariosasesor ON horariosasesor.id_asesor = asesores.id";
-            query += " WHERE materiasasesor.id_materia =" + idMateria + "  AND horariosasesor.id_horario = "+idHora;
+            query += " AND materiasasesor.id_materia =" + idMateria + "  AND horariosasesor.id_horario = "+idHora;
         }
         else{
-            query += " WHERE materiasasesor.id_materia ="+ idMateria;
+            query += " AND materiasasesor.id_materia ="+ idMateria;
         }
         res = getTabla(query);
         modelo.setColumnIdentifiers(new Object[]{"No.","Nombre", "Click"});
@@ -296,6 +304,7 @@ public class Busqueda extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Busqueda().setVisible(true);
             }

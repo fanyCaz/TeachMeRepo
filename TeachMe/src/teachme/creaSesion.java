@@ -5,17 +5,77 @@
  */
 package teachme;
 
+import Clases.Alumno;
+import Clases.Asesor;
+import Clases.Horario;
+import Clases.Materia;
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.Statement;
+import java.sql.ResultSet;
+import static teachme.TeachMe.BuscarHorario;
+import static teachme.TeachMe.getConection;
+
 /**
  *
  * @author estef
  */
 public class creaSesion extends javax.swing.JFrame {
-
+    Asesor asesorA = new Asesor();
+    Alumno alumnoA = new Alumno();
+    Materia matA = new Materia();
     /**
      * Creates new form creaSesion
+     * @param asesor
+     * @param alumno
+     * @param materia
      */
-    public creaSesion() {
+    public creaSesion(Asesor asesor, Alumno alumno, Materia materia) {
+        asesorA = asesor;
+        alumnoA = alumno;
+        matA = materia;
         initComponents();
+        Horario buscado = HorarioPorDisponible(asesor.getId());
+        lblnombre.setText(asesor.getNombreCompleto());
+    }
+    
+    public Horario HorarioPorDisponible(int idAsesor){
+        int id;
+        String hora;
+        Horario buscado = new Horario();
+        try{
+            Connection con;
+            PreparedStatement ps;
+            ResultSet res;
+            con = getConection();
+            String query = "SELECT horarios.id, horarios.hora FROM asesores INNER JOIN horariosasesor ON asesores.id = horariosasesor.id_asesor INNER JOIN horarios ON horariosasesor.id_horario = horarios.id WHERE horariosasesor.disponible = 1 AND asesores.id = ?";
+            //ps = (PreparedStatement) con.createStatement("");
+            ps = (PreparedStatement) con.prepareStatement(query);
+            ps.setInt(1, idAsesor);
+            res = ps.executeQuery();
+            if(res.next() == false){
+                System.out.println("No existe");
+                return null;
+            }
+            while(res.next()){
+                id = res.getInt(1);
+                hora = res.getString(2);
+                buscado.setId(id);
+                buscado.setHora(hora);
+                cmbHora.addItem(hora);
+            }
+            //System.out.println(buscado.getApPaterno() + "paterno");
+            res.close();
+            ps.close();
+            return buscado;
+        }catch(Exception e){
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    private creaSesion() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -27,32 +87,100 @@ public class creaSesion extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        lblnombre = new javax.swing.JLabel();
+        cmbHora = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        btnAceptar = new javax.swing.JButton();
+        btnback = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        jLabel1.setText("Crea una sesión con");
+        lblnombre.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        lblnombre.setText("Crea una sesión con");
+        getContentPane().add(lblnombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 470, 43));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 814, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(375, Short.MAX_VALUE))
-        );
+        cmbHora.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbHoraActionPerformed(evt);
+            }
+        });
+        getContentPane().add(cmbHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, 321, 38));
+
+        jLabel2.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel2.setText("Selecciona la hora adecuada para ti...");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 120, 230, -1));
+
+        btnAceptar.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        btnAceptar.setText("ACEPTAR");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnAceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 230, 321, 43));
+
+        btnback.setIcon(new javax.swing.ImageIcon(getClass().getResource("/asesor/imagenes/btnback.png"))); // NOI18N
+        btnback.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnbackActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnback, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 70, 60));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/asesor/imagenes/fondo2.png"))); // NOI18N
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 480, 320));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cmbHoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbHoraActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbHoraActionPerformed
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        // TODO add your handling code here:
+        String hora = (String) cmbHora.getSelectedItem();
+        Horario horaB = BuscarHorario(hora);
+        try{
+            Connection con = null;
+            con = getConection();
+            PreparedStatement ps;
+            ResultSet res;
+            String query;
+            query = "INSERT INTO sesion(id_asesor,id_alumno,id_horario,id_materia) VALUES (?,?,?,?)";
+                ps = (PreparedStatement) con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, asesorA.getId());
+                ps.setInt(2, alumnoA.getId());
+                ps.setInt(3, horaB.getId());
+                ps.setInt(4, matA.getId());
+                ps.executeUpdate();
+               
+             String query2 = "UPDATE horariosasesor SET disponible=0 WHERE id_asesor = ? AND id_horario = ?";
+                ps = (PreparedStatement) con.prepareStatement(query2, Statement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, asesorA.getId());
+                ps.setInt(2, horaB.getId());
+                ps.executeUpdate();
+                System.out.println("Si se pudo");
+               ps.close();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        finally{
+            UserDashboard userDash = new UserDashboard(alumnoA);
+            userDash.setVisible(true);
+            this.setVisible(false);
+        }
+        
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void btnbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbackActionPerformed
+        // TODO add your handling code here:
+        Busqueda busqueda = new Busqueda(alumnoA);
+        busqueda.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnbackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -83,6 +211,7 @@ public class creaSesion extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new creaSesion().setVisible(true);
             }
@@ -90,6 +219,11 @@ public class creaSesion extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnAceptar;
+    private javax.swing.JButton btnback;
+    private javax.swing.JComboBox<String> cmbHora;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel lblnombre;
     // End of variables declaration//GEN-END:variables
 }

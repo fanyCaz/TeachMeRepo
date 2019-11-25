@@ -178,29 +178,35 @@ public class Index extends javax.swing.JFrame {
         String nombreDB="",apellidoDB="",apellidoMDB="",usernameDB="";
         //ResultSet resultadoBusqueda = BuscarUsuario(nombreUsuario);
         Usuario usuarioLog= BuscarUsuario(nombreUsuario);
-        //System.out.println(usuarioLog.getNombre());
-        String encriptado = TeachMe.encripta(password, 2);
-        //Desencripta el password y lo compara con el que puso el usuario
-        if(encriptado.equals(usuarioLog.getPassword())){
-            System.out.println("Si son iguales");//esta imprimiendo lo encriptado
-            int tipo = BuscarTipoUsuario(usuarioLog.getId());
-            System.out.println("tipo " + tipo);
-            if(tipo == 1){
-                Asesor asesor = BuscarAsesor(usuarioLog.getId());
-                interfaz IAsesor = new interfaz(asesor);
-                IAsesor.setVisible(true);
-            }
-            else{
-                Alumno alumno = BuscarAlumno(usuarioLog.getId());
-                UserDashboard userDashboard = new UserDashboard(alumno);
-                userDashboard.setVisible(true);
-            }
-            this.setVisible(false);
+        if(usuarioLog == null){
+            lblError.setText("El usuario que has ingresado no existe");
         }
         else{
-            lblError.setText("El password es incorrecto, intenta de nuevo");
-            System.out.println("No concuerdan");
+            //System.out.println(usuarioLog.getNombre());
+            String encriptado = TeachMe.encripta(password, 2);
+            //Desencripta el password y lo compara con el que puso el usuario
+            if(encriptado.equals(usuarioLog.getPassword())){
+                System.out.println("Si son iguales");//esta imprimiendo lo encriptado
+                int tipo = BuscarTipoUsuario(usuarioLog.getId());
+                System.out.println("tipo " + tipo);
+                if(tipo == 1){
+                    Asesor asesor = BuscarAsesor(usuarioLog.getId());
+                    interfaz IAsesor = new interfaz(asesor);
+                    IAsesor.setVisible(true);
+                }
+                else{
+                    Alumno alumno = BuscarAlumno(usuarioLog.getId());
+                    UserDashboard userDashboard = new UserDashboard(alumno);
+                    userDashboard.setVisible(true);
+                }
+                this.setVisible(false);
+            }
+            else{
+                lblError.setText("El password es incorrecto, intenta de nuevo");
+                System.out.println("No concuerdan");
+            }
         }
+        
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

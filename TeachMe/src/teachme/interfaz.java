@@ -308,10 +308,11 @@ public class interfaz extends javax.swing.JFrame {
             PreparedStatement ps;
             ResultSet res;
             Horario horaSeleccionada = BuscarHorario(hora);
-            query = "INSERT INTO horariosasesor (id_asesor, id_horario) VALUES(?,?)";
+            query = "INSERT INTO horariosasesor (id_asesor, id_horario, disponible) VALUES(?,?,?)";
             ps = (PreparedStatement) con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS); /* El nombre de la tabla*/
             ps.setInt(1, asesorActual.getId());
             ps.setInt(2, horaSeleccionada.getId());
+            ps.setInt(3, 1);
             ps.executeUpdate();
             errorHora.setText("La hora se ha agregado correctamente");
         }catch(Exception e){

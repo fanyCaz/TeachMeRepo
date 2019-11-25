@@ -172,16 +172,18 @@ public class TeachMe {
         }
     }
     
+    
     public static Asesor BuscarAsesor(int id){
         String pswDB="", nombreDB="", apellidoDB, apellidoMDB, usernameDB ;
         double calificacion;
+        int id_usuario;
         Asesor buscado = new Asesor();
         try{
             Connection con;
             PreparedStatement ps;
             ResultSet res;
             con = getConection();
-            String query = "SELECT asesores.id, asesores.calificacion ,usuario.nombre, usuario.ap_paterno, usuario.ap_materno, usuario.username FROM usuario INNER JOIN asesores ON usuario.id = asesores.id_usuario WHERE  asesores.id_usuario = ?";
+            String query = "SELECT asesores.id, asesores.calificacion ,usuario.nombre, usuario.ap_paterno, usuario.ap_materno, usuario.username, usuario.id FROM usuario INNER JOIN asesores ON usuario.id = asesores.id_usuario WHERE  asesores.id_usuario = ?";
             //ps = (PreparedStatement) con.createStatement("");
             ps = (PreparedStatement) con.prepareStatement(query);
             ps.setInt(1, id);
@@ -197,12 +199,14 @@ public class TeachMe {
                 apellidoDB = res.getString(4);
                 apellidoMDB = res.getString(5);
                 usernameDB = res.getString(6);
+                id_usuario = res.getInt(7);
                 buscado.setId(id);
                 buscado.setCalificacion(calificacion);
                 buscado.setNombre(nombreDB);
                 buscado.setApPaterno(apellidoDB);
                 buscado.setApMaterno(apellidoMDB);
                 buscado.setUsername(usernameDB);
+                buscado.setId_usuario(id_usuario);
             }
             //System.out.println(buscado.getApPaterno() + "paterno");
             res.close();
