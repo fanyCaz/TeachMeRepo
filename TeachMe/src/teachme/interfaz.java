@@ -14,6 +14,9 @@ import Clases.Materia;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -28,6 +31,9 @@ public class interfaz extends javax.swing.JFrame {
      */
     public interfaz(Asesor usuarioActual) {
         initComponents();
+        System.out.println(usuarioActual.getId());
+        mostrarSesiones(usuarioActual.getId());
+        lblMateria.setText(usuarioActual.getUsername());
         asesorActual = usuarioActual;
         pnlHoras.setVisible(false);
         pnlMaterias.setVisible(false);
@@ -64,6 +70,8 @@ public class interfaz extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         lblNombre = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaSesiones = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -239,6 +247,25 @@ public class interfaz extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        tablaSesiones.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tablaSesiones.setRowHeight(30);
+        tablaSesiones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaSesionesMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablaSesiones);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -246,17 +273,25 @@ public class interfaz extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -298,6 +333,40 @@ public class interfaz extends javax.swing.JFrame {
         pnlMaterias.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void mostrarSesiones(int idAsesor){
+        tablaSesiones.setDefaultRenderer(Object.class, new Renderizar());
+        JButton guardar = new JButton("Eliminar sesion");
+        guardar.setName("e");
+        DefaultTableModel modelo = new DefaultTableModel();
+        try{
+            Connection con;
+            PreparedStatement ps;
+            ResultSet res;
+            con = getConection();
+            String query = "SELECT usuario.nombre, usuario.ap_paterno, horarios.hora ";
+            query += " FROM sesion INNER JOIN alumnos ON sesion.id_alumno = alumnos.id INNER JOIN usuario ON alumnos.id_usuario = usuario.id ";
+            query += " INNER JOIN horarios ON horarios.id = sesion.id_horario WHERE sesion.id_asesor = "+ idAsesor;
+            res = getTabla(query);
+            modelo.setColumnIdentifiers(new Object[]{"Nombre", "Apellido","Hora","..."});
+            if(res == null){
+                //modelo.addRow(new Object[]{"No hay usuarios con este servicio","Sin usau"});
+                System.out.println("No hay sesiones");
+            }
+            else{
+                while(res.next()){
+                    modelo.addRow(new Object[]{res.getString(1),res.getString(2),res.getString(3), guardar});
+                }
+                tablaSesiones.setModel(modelo);                
+                tablaSesiones.setPreferredScrollableViewportSize(tablaSesiones.getPreferredSize());
+                System.out.println("Hay sesiones");
+                System.out.println(asesorActual.getId());
+            }
+        }
+        catch(SQLException e){
+            System.out.println(e);
+        }
+    }
+    
     private void btnAddhoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddhoraActionPerformed
         // TODO add your handling code here:
         String hora="", query;
@@ -340,6 +409,37 @@ public class interfaz extends javax.swing.JFrame {
             errormateria.setText("Ha ocurrido un error al agregar la materia");
         }
     }//GEN-LAST:event_btnAddmateriaActionPerformed
+
+    int clickTabla =0;
+    private void tablaSesionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaSesionesMouseClicked
+        // TODO add your handling code here:
+        clickTabla = this.tablaSesiones.rowAtPoint(evt.getPoint());
+        int id = (int)tablaSesiones.getValueAt(clickTabla, 0);
+        String nombre = ""+tablaSesiones.getValueAt(clickTabla, 1);
+        String apellido = ""+tablaSesiones.getValueAt(clickTabla, 2);
+        
+        
+        int column = tablaSesiones.getColumnModel().getColumnIndexAtX(evt.getX());
+        int row = evt.getY()/tablaSesiones.getRowHeight();
+        
+        if(row < tablaSesiones.getRowCount() && row >= 0 && column < tablaSesiones.getColumnCount() && column >= 0){
+            Object value = tablaSesiones.getValueAt(row, column);
+            if(value instanceof JButton){
+                ((JButton)value).doClick();
+                JButton boton = (JButton) value;
+
+                if(boton.getName().equals("q")){
+                    int confirm = JOptionPane.showConfirmDialog(null, "¿Eliminar esta sesión?", "Confirmar", JOptionPane.OK_CANCEL_OPTION);
+                    if(JOptionPane.OK_OPTION == confirm){
+                        System.out.println("confirmadoo");
+                        
+                    }
+                    
+                    //EVENTOS ELIMINAR
+                }
+            }
+        }
+    }//GEN-LAST:event_tablaSesionesMouseClicked
 
     /**
      * @param args the command line arguments
@@ -390,9 +490,11 @@ public class interfaz extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblMateria;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JPanel pnlHoras;
     private javax.swing.JPanel pnlMaterias;
+    private javax.swing.JTable tablaSesiones;
     // End of variables declaration//GEN-END:variables
 }

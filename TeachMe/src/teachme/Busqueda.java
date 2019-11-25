@@ -242,7 +242,6 @@ public class Busqueda extends javax.swing.JFrame {
         JButton guardar = new JButton("Seleccionar");
         guardar.setName("q");
         DefaultTableModel modelo = new DefaultTableModel();
-        //Asesor arrayAsesores[]=new Asesor[3];
         Connection con;
         PreparedStatement ps;
         ResultSet res;

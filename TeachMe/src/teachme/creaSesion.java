@@ -36,7 +36,7 @@ public class creaSesion extends javax.swing.JFrame {
         matA = materia;
         initComponents();
         Horario buscado = HorarioPorDisponible(asesor.getId());
-        lblnombre.setText(asesor.getNombreCompleto());
+        lblnombre.setText("Crea una sesión con : " +asesor.getNombreCompleto());
     }
     
     public Horario HorarioPorDisponible(int idAsesor){
@@ -58,11 +58,11 @@ public class creaSesion extends javax.swing.JFrame {
                 return null;
             }
             while(res.next()){
-                id = res.getInt(1);
                 hora = res.getString(2);
+                cmbHora.addItem(hora);
+                id = res.getInt(1);
                 buscado.setId(id);
                 buscado.setHora(hora);
-                cmbHora.addItem(hora);
             }
             //System.out.println(buscado.getApPaterno() + "paterno");
             res.close();
@@ -101,6 +101,7 @@ public class creaSesion extends javax.swing.JFrame {
         lblnombre.setText("Crea una sesión con");
         getContentPane().add(lblnombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 470, 43));
 
+        cmbHora.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona..." }));
         cmbHora.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbHoraActionPerformed(evt);

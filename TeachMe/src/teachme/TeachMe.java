@@ -176,7 +176,7 @@ public class TeachMe {
     public static Asesor BuscarAsesor(int id){
         String pswDB="", nombreDB="", apellidoDB, apellidoMDB, usernameDB ;
         double calificacion;
-        int id_usuario;
+        int id_usuario,Id;
         Asesor buscado = new Asesor();
         try{
             Connection con;
@@ -193,14 +193,14 @@ public class TeachMe {
                 return null;
             }
             if(res.first()){
-                id = res.getInt(1);
+                Id = res.getInt(1);
                 calificacion = res.getDouble(2);
                 nombreDB= res.getString(3);
                 apellidoDB = res.getString(4);
                 apellidoMDB = res.getString(5);
                 usernameDB = res.getString(6);
                 id_usuario = res.getInt(7);
-                buscado.setId(id);
+                buscado.setId(Id);
                 buscado.setCalificacion(calificacion);
                 buscado.setNombre(nombreDB);
                 buscado.setApPaterno(apellidoDB);
