@@ -246,7 +246,7 @@ public class Busqueda extends javax.swing.JFrame {
         PreparedStatement ps;
         ResultSet res;
         con = getConection();
-        String query = " SELECT DISTINCT(asesores.id_usuario), CONCAT(usuario.nombre, '  ',usuario.ap_paterno ) AS nombre FROM materiasasesor LEFT JOIN asesores ON materiasasesor.id_asesor = asesores.id INNER JOIN usuario ON asesores.id_usuario = usuario.id  LEFT JOIN horariosasesor ON horariosasesor.id_asesor = asesores.id ";
+        String query = " SELECT DISTINCT(asesores.id_usuario), asesores.contacto, CONCAT(usuario.nombre, '  ',usuario.ap_paterno ) AS nombre FROM materiasasesor LEFT JOIN asesores ON materiasasesor.id_asesor = asesores.id INNER JOIN usuario ON asesores.id_usuario = usuario.id  LEFT JOIN horariosasesor ON horariosasesor.id_asesor = asesores.id ";
             query += " WHERE horariosasesor.disponible = 1 ";
         if(idHora > 0){
             query += " AND materiasasesor.id_materia =" + idMateria + "  AND horariosasesor.id_horario = "+idHora;
@@ -255,14 +255,14 @@ public class Busqueda extends javax.swing.JFrame {
             query += " AND materiasasesor.id_materia ="+ idMateria;
         }
         res = getTabla(query);
-        modelo.setColumnIdentifiers(new Object[]{"No.","Nombre", "Click"});
+        modelo.setColumnIdentifiers(new Object[]{"No.","Contacto","Nombre", "Click"});
         try{
             if(res == null){
                 modelo.addRow(new Object[]{"No hay usuarios con este servicio","Sin usau"});
             }
             else{
                 while(res.next()){
-                modelo.addRow(new Object[]{res.getInt(1),res.getString(2), guardar});
+                modelo.addRow(new Object[]{res.getInt(1),res.getString(2),res.getString(3), guardar});
                 }
                 tblAsesores.setModel(modelo);                
                 tblAsesores.setPreferredScrollableViewportSize(tblAsesores.getPreferredSize());

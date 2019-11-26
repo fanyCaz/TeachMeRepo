@@ -10,7 +10,8 @@ package Clases;
  * @author estef
  */
 public class Asesor extends Usuario{
-    double calificacion;
+    String contacto;
+    int id_usuario;
 
     @Override
     public int getId() {
@@ -21,7 +22,7 @@ public class Asesor extends Usuario{
     public void setId(int id) {
         this.id = id;
     }
-    int id_usuario;
+
 
     @Override
     public String getNombre() {
@@ -65,12 +66,12 @@ public class Asesor extends Usuario{
 
     public Asesor(){}
     
-    public double getCalificacion() {
-        return calificacion;
+    public String getContacto() {
+        return contacto;
     }
 
-    public void setCalificacion(double calificacion) {
-        this.calificacion = calificacion;
+    public void setContacto(String contacto) {
+        this.contacto = contacto;
     }
 
     public int getId_usuario() {

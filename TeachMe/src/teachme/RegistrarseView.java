@@ -254,12 +254,15 @@ public class RegistrarseView extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(radioAlumno)
                     .addComponent(radioAsesor))
-                .addGap(13, 13, 13)
-                .addComponent(lblError)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblmat, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblsem))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(lblError)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblsem))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblmat, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbmaterias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -370,12 +373,12 @@ public class RegistrarseView extends javax.swing.JFrame {
                     //Si el usuario es asesor
                     if(tipoUsuario == 1){
                         Asesor nuevoAsesor = new Asesor();
-                        nuevoAsesor.setCalificacion(0);
+                        nuevoAsesor.setContacto("0");
                         nuevoAsesor.setId_usuario(idGuardado);
-                        String q2 = "INSERT INTO asesores (id_usuario, calificacion) VALUES(?,?)";
+                        String q2 = "INSERT INTO asesores (id_usuario, contacto) VALUES(?,?)";
                         ps = (PreparedStatement) con.prepareStatement(q2, Statement.RETURN_GENERATED_KEYS); /* El nombre de la tabla*/
                         ps.setInt(1, nuevoAsesor.getId_usuario());
-                        ps.setDouble(2, nuevoAsesor.getCalificacion());
+                        ps.setString(2, nuevoAsesor.getContacto());
                         ps.executeUpdate();
                         ResultSet affectedAsesor = ps.getGeneratedKeys();
                         if(affectedAsesor.next()){

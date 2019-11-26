@@ -175,7 +175,7 @@ public class TeachMe {
     
     public static Asesor BuscarAsesor(int id){
         String pswDB="", nombreDB="", apellidoDB, apellidoMDB, usernameDB ;
-        double calificacion;
+        String contacto;
         int id_usuario,Id;
         Asesor buscado = new Asesor();
         try{
@@ -183,7 +183,7 @@ public class TeachMe {
             PreparedStatement ps;
             ResultSet res;
             con = getConection();
-            String query = "SELECT asesores.id, asesores.calificacion ,usuario.nombre, usuario.ap_paterno, usuario.ap_materno, usuario.username, usuario.id FROM usuario INNER JOIN asesores ON usuario.id = asesores.id_usuario WHERE  asesores.id_usuario = ?";
+            String query = "SELECT asesores.id, asesores.contacto ,usuario.nombre, usuario.ap_paterno, usuario.ap_materno, usuario.username, usuario.id FROM usuario INNER JOIN asesores ON usuario.id = asesores.id_usuario WHERE  asesores.id_usuario = ?";
             //ps = (PreparedStatement) con.createStatement("");
             ps = (PreparedStatement) con.prepareStatement(query);
             ps.setInt(1, id);
@@ -194,14 +194,14 @@ public class TeachMe {
             }
             if(res.first()){
                 Id = res.getInt(1);
-                calificacion = res.getDouble(2);
+                contacto = res.getString(2);
                 nombreDB= res.getString(3);
                 apellidoDB = res.getString(4);
                 apellidoMDB = res.getString(5);
                 usernameDB = res.getString(6);
                 id_usuario = res.getInt(7);
                 buscado.setId(Id);
-                buscado.setCalificacion(calificacion);
+                buscado.setContacto(contacto);
                 buscado.setNombre(nombreDB);
                 buscado.setApPaterno(apellidoDB);
                 buscado.setApMaterno(apellidoMDB);
