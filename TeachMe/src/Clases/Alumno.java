@@ -82,4 +82,8 @@ public class Alumno extends Usuario{
         this.id_usuario = id_usuario;
     }
     
+    public String getSemestreStr(){
+        return semestre +"" ;
+    }
+    
 }

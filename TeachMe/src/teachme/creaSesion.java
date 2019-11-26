@@ -48,7 +48,7 @@ public class creaSesion extends javax.swing.JFrame {
             PreparedStatement ps;
             ResultSet res;
             con = getConection();
-            String query = "SELECT horarios.id, horarios.hora FROM asesores INNER JOIN horariosasesor ON asesores.id = horariosasesor.id_asesor INNER JOIN horarios ON horariosasesor.id_horario = horarios.id WHERE horariosasesor.disponible = 1 AND asesores.id = ?";
+            String query = "SELECT horarios.id, horarios.hora FROM asesores INNER JOIN horariosasesor ON asesores.id = horariosasesor.id_asesor INNER JOIN horarios ON horariosasesor.id_horario = horarios.id WHERE asesores.id = ? AND horariosasesor.disponible = 1";
             //ps = (PreparedStatement) con.createStatement("");
             ps = (PreparedStatement) con.prepareStatement(query);
             ps.setInt(1, idAsesor);
@@ -95,13 +95,13 @@ public class creaSesion extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocation(new java.awt.Point(400, 200));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblnombre.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         lblnombre.setText("Crea una sesión con");
         getContentPane().add(lblnombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 470, 43));
 
-        cmbHora.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona..." }));
         cmbHora.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbHoraActionPerformed(evt);
@@ -131,7 +131,7 @@ public class creaSesion extends javax.swing.JFrame {
         getContentPane().add(btnback, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 70, 60));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/asesor/imagenes/fondo2.png"))); // NOI18N
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 480, 320));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 320));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

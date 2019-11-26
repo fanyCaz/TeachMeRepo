@@ -5,17 +5,37 @@
  */
 package teachme;
 
+import Clases.Alumno;
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import static teachme.TeachMe.BuscarAlumno;
+import static teachme.TeachMe.getConection;
+
 /**
  *
  * @author estef
  */
 public class EditarDatosAlumno extends javax.swing.JFrame {
-
+    Alumno alumnoEditado = new Alumno();
     /**
      * Creates new form EditarDatosAlumno
+     * @param alumno
      */
-    public EditarDatosAlumno() {
+    public EditarDatosAlumno(Alumno alumno) {
+        alumnoEditado = alumno;
         initComponents();
+        lblerror.setVisible(false);
+        txtNombre.setText(alumno.getNombre());
+        txtApellidoP.setText(alumno.getApPaterno());
+        txtApellidoM.setText(alumno.getApMaterno());
+        txtSemestre.setText(alumno.getSemestreStr());
+    }
+
+    private EditarDatosAlumno() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -27,21 +47,163 @@ public class EditarDatosAlumno extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnback = new javax.swing.JButton();
+        txtNombre = new javax.swing.JTextField();
+        txtApellidoP = new javax.swing.JTextField();
+        txtApellidoM = new javax.swing.JTextField();
+        txtSemestre = new javax.swing.JTextField();
+        btnAceptar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        lblerror = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(114, 142, 190));
+        setLocation(new java.awt.Point(300, 300));
+
+        btnback.setIcon(new javax.swing.ImageIcon(getClass().getResource("/asesor/imagenes/btnback.png"))); // NOI18N
+        btnback.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnbackActionPerformed(evt);
+            }
+        });
+
+        txtNombre.setText("jTextField1");
+
+        txtApellidoP.setText("jTextField1");
+
+        txtApellidoM.setText("jTextField1");
+
+        txtSemestre.setText("jTextField1");
+
+        btnAceptar.setBackground(new java.awt.Color(176, 236, 247));
+        btnAceptar.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        btnAceptar.setText("ACEPTAR");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
+        jLabel1.setText("Editar Perfil");
+
+        jLabel2.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel2.setText("Nombre");
+
+        jLabel3.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel3.setText("Apellido Paterno");
+
+        jLabel4.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel4.setText("Apellido Materno");
+
+        jLabel5.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel5.setText("Semestre");
+
+        lblerror.setForeground(new java.awt.Color(255, 0, 0));
+        lblerror.setText("Ha ocurrido un error, por favor, intente de nuevo");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 795, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(btnback, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtNombre)
+                    .addComponent(txtApellidoP)
+                    .addComponent(txtApellidoM)
+                    .addComponent(txtSemestre)
+                    .addComponent(btnAceptar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel1)
+                    .addComponent(lblerror, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 356, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnback, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jLabel1)))
+                .addGap(20, 20, 20)
+                .addComponent(jLabel2)
+                .addGap(4, 4, 4)
+                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3)
+                .addGap(3, 3, 3)
+                .addComponent(txtApellidoP, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtApellidoM, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addComponent(lblerror)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        // TODO add your handling code here:
+        String name, lastname, lastname2;
+        int semester;
+        name = txtNombre.getText();
+        lastname = txtApellidoP.getText();
+        lastname2 = txtApellidoM.getText();
+        semester = Integer.parseInt(txtSemestre.getText());
+        try{
+            Connection con = null;
+            con = getConection();
+            PreparedStatement ps;
+            ResultSet res;
+            String query = "UPDATE usuario SET nombre = ?, ap_paterno = ?, ap_materno = ? WHERE id= ?";
+            ps = (PreparedStatement) con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS); /* El nombre de la tabla*/
+            ps.setString(1, name);
+            ps.setString(2, lastname);
+            ps.setString(3, lastname2);
+            ps.setInt(4, alumnoEditado.getId_usuario());
+            ps.executeUpdate();
+            String query1 = "UPDATE alumnos SET semestre = ? WHERE id_usuario= ?";
+            ps = (PreparedStatement) con.prepareStatement(query1, Statement.RETURN_GENERATED_KEYS); /* El nombre de la tabla*/
+            ps.setInt(1, semester);
+            ps.setInt(2, alumnoEditado.getId_usuario());
+            ps.executeUpdate();
+            ps.close();
+            Alumno nuevoA = BuscarAlumno(alumnoEditado.getId_usuario());
+            UserDashboard userD = new UserDashboard(nuevoA);
+            userD.setVisible(true);
+            this.setVisible(false);
+        }
+        catch(SQLException e){
+            lblerror.setVisible(true);
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void btnbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbackActionPerformed
+        // TODO add your handling code here:
+        UserDashboard userD = new UserDashboard(alumnoEditado);
+        userD.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnbackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -72,6 +234,7 @@ public class EditarDatosAlumno extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new EditarDatosAlumno().setVisible(true);
             }
@@ -79,5 +242,17 @@ public class EditarDatosAlumno extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAceptar;
+    private javax.swing.JButton btnback;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel lblerror;
+    private javax.swing.JTextField txtApellidoM;
+    private javax.swing.JTextField txtApellidoP;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtSemestre;
     // End of variables declaration//GEN-END:variables
 }

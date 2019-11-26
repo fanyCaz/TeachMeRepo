@@ -227,7 +227,7 @@ public class TeachMe {
             PreparedStatement ps;
             ResultSet res;
             con = getConection();
-            String query = "SELECT alumnos.id, alumnos.semestre ,usuario.nombre, usuario.ap_paterno, usuario.ap_materno, usuario.username FROM usuario INNER JOIN alumnos ON usuario.id = alumnos.id_usuario WHERE alumnos.id_usuario = ?";
+            String query = "SELECT alumnos.id, alumnos.semestre ,usuario.nombre, usuario.ap_paterno, usuario.ap_materno, usuario.username, usuario.id FROM usuario INNER JOIN alumnos ON usuario.id = alumnos.id_usuario WHERE alumnos.id_usuario = ?";
             //ps = (PreparedStatement) con.createStatement("");
             ps = (PreparedStatement) con.prepareStatement(query);
             ps.setInt(1, id);
@@ -249,6 +249,7 @@ public class TeachMe {
                 buscado.setApPaterno(apellidoDB);
                 buscado.setApMaterno(apellidoMDB);
                 buscado.setUsername(usernameDB);
+                buscado.setId_usuario(res.getInt(7));
             }
             //System.out.println(buscado.getApPaterno() + "paterno");
             res.close();
