@@ -409,7 +409,7 @@ public class interfaz extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnAddmateriaActionPerformed
 
-    private void eliminarSesion(int idSesion){
+    private void eliminarSesion(int idSesion, String hora){
         try{
             Connection con = null;
             con = getConection();
@@ -419,6 +419,12 @@ public class interfaz extends javax.swing.JFrame {
             ps = (PreparedStatement) con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idSesion);
             ps.execute();
+            Horario horaDb = BuscarHorario(hora);
+            String query2 = "UPDATE horariosasesor SET disponible=1 WHERE id_asesor = ? AND id_horario = ?";
+            ps = (PreparedStatement) con.prepareStatement(query2, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, asesorActual.getId());
+            ps.setInt(2, horaDb.getId());
+            ps.executeUpdate();
             //ps.executeUpdate();
             ps.close();
         }
@@ -432,7 +438,7 @@ public class interfaz extends javax.swing.JFrame {
         // TODO add your handling code here:
         clickTabla = this.tablaSesiones.rowAtPoint(evt.getPoint());
         int id = (int)tablaSesiones.getValueAt(clickTabla, 0);
-        
+        String horaStr = (String)tablaSesiones.getValueAt(clickTabla, 3);
         int column = tablaSesiones.getColumnModel().getColumnIndexAtX(evt.getX());
         int row = evt.getY()/tablaSesiones.getRowHeight();
         
@@ -446,7 +452,7 @@ public class interfaz extends javax.swing.JFrame {
                     int confirm = JOptionPane.showConfirmDialog(null, "¿Eliminar esta sesión?", "Confirmar", JOptionPane.OK_CANCEL_OPTION);
                     if(JOptionPane.OK_OPTION == confirm){
                         System.out.println("confirmadoo");
-                        eliminarSesion(id);
+                        eliminarSesion(id, horaStr);
                         //Thread.sleep(1000);
                         mostrarSesiones(asesorActual.getId());
                     }

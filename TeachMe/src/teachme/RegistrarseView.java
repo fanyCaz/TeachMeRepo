@@ -100,7 +100,7 @@ public class RegistrarseView extends javax.swing.JFrame {
         setBackground(new java.awt.Color(167, 167, 238));
         setLocation(new java.awt.Point(50, 50));
         setMinimumSize(new java.awt.Dimension(1000, 580));
-        setPreferredSize(new java.awt.Dimension(1100, 580));
+        setPreferredSize(new java.awt.Dimension(1200, 580));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(153, 224, 197));

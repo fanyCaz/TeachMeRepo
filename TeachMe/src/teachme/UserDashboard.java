@@ -6,6 +6,14 @@
 package teachme;
 
 import Clases.Alumno;
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+import javax.swing.JButton;
+import javax.swing.table.DefaultTableModel;
+import static teachme.TeachMe.getConection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import static teachme.TeachMe.getTabla;
 
 /**
  *
@@ -24,6 +32,7 @@ public class UserDashboard extends javax.swing.JFrame {
         lblNombre.setText(alumno.getNombreCompleto());
         lblsemestre.setText("Tu semestre : " + alumno.getSemestre());
         lblusername1.setText(alumno.getUsername());
+        mostrarSesionesAlumno(alumnoActual.getId());
     }
 
     private UserDashboard() {
@@ -50,6 +59,7 @@ public class UserDashboard extends javax.swing.JFrame {
         lblsemestre = new javax.swing.JLabel();
         btnEditar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
+        tblSesiones = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(100, 50));
@@ -149,6 +159,25 @@ public class UserDashboard extends javax.swing.JFrame {
                 .addGap(35, 35, 35))
         );
 
+        tblSesiones.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tblSesiones.setRowHeight(30);
+        tblSesiones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblSesionesMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblSesiones);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -212,7 +241,44 @@ public class UserDashboard extends javax.swing.JFrame {
         busqueda.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    
+    int clickTabla =0;
+    private void tblSesionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSesionesMouseClicked
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_tblSesionesMouseClicked
+    
+    private void mostrarSesionesAlumno(int idAlumno){
+        tblSesiones.setDefaultRenderer(Object.class, new Renderizar());
+        DefaultTableModel modelo = new DefaultTableModel();
+        try{
+            Connection con;
+            PreparedStatement ps;
+            ResultSet res;
+            con = getConection();
+            String query = "SELECT sesion.id, usuario.nombre, usuario.ap_paterno, horarios.hora ";
+            query += " FROM sesion INNER JOIN asesores ON sesion.id_asesor = asesores.id INNER JOIN usuario ON asesores.id_usuario = usuario.id ";
+            query += " INNER JOIN horarios ON horarios.id = sesion.id_horario WHERE sesion.id_alumno = "+ idAlumno;
+            res = getTabla(query);
+            modelo.setColumnIdentifiers(new Object[]{"No.","Nombre","Apellido","Hora"});
+            if(res == null){
+                //modelo.addRow(new Object[]{"No hay usuarios con este servicio","Sin usau"});
+                System.out.println("No hay sesiones");
+            }
+            else{
+                while(res.next()){
+                    modelo.addRow(new Object[]{res.getInt(1),res.getString(2),res.getString(3),res.getString(4)});
+                }
+                tblSesiones.setModel(modelo);                
+                tblSesiones.setPreferredScrollableViewportSize(tblSesiones.getPreferredSize());
+                System.out.println(alumnoActual.getId());
+            }
+        }
+        catch(SQLException e){
+            System.out.println(e);
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -260,5 +326,6 @@ public class UserDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblsemestre;
     private javax.swing.JLabel lblusername1;
+    private javax.swing.JTable tblSesiones;
     // End of variables declaration//GEN-END:variables
 }
