@@ -343,22 +343,21 @@ public class interfaz extends javax.swing.JFrame {
             PreparedStatement ps;
             ResultSet res;
             con = getConection();
-            String query = "SELECT usuario.nombre, usuario.ap_paterno, horarios.hora ";
+            String query = "SELECT sesion.id, usuario.nombre, usuario.ap_paterno, horarios.hora ";
             query += " FROM sesion INNER JOIN alumnos ON sesion.id_alumno = alumnos.id INNER JOIN usuario ON alumnos.id_usuario = usuario.id ";
             query += " INNER JOIN horarios ON horarios.id = sesion.id_horario WHERE sesion.id_asesor = "+ idAsesor;
             res = getTabla(query);
-            modelo.setColumnIdentifiers(new Object[]{"Nombre", "Apellido","Hora","..."});
+            modelo.setColumnIdentifiers(new Object[]{"No.","Nombre","Apellido","Hora","..."});
             if(res == null){
                 //modelo.addRow(new Object[]{"No hay usuarios con este servicio","Sin usau"});
                 System.out.println("No hay sesiones");
             }
             else{
                 while(res.next()){
-                    modelo.addRow(new Object[]{res.getString(1),res.getString(2),res.getString(3), guardar});
+                    modelo.addRow(new Object[]{res.getInt(1),res.getString(2),res.getString(3),res.getString(4),guardar});
                 }
                 tablaSesiones.setModel(modelo);                
                 tablaSesiones.setPreferredScrollableViewportSize(tablaSesiones.getPreferredSize());
-                System.out.println("Hay sesiones");
                 System.out.println(asesorActual.getId());
             }
         }
@@ -410,14 +409,29 @@ public class interfaz extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnAddmateriaActionPerformed
 
+    private void eliminarSesion(int idSesion){
+        try{
+            Connection con = null;
+            con = getConection();
+            PreparedStatement ps;
+            ResultSet res;
+            String query = "DELETE FROM sesion WHERE id = ?";
+            ps = (PreparedStatement) con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, idSesion);
+            ps.execute();
+            //ps.executeUpdate();
+            ps.close();
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+    }
+            
     int clickTabla =0;
     private void tablaSesionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaSesionesMouseClicked
         // TODO add your handling code here:
         clickTabla = this.tablaSesiones.rowAtPoint(evt.getPoint());
         int id = (int)tablaSesiones.getValueAt(clickTabla, 0);
-        String nombre = ""+tablaSesiones.getValueAt(clickTabla, 1);
-        String apellido = ""+tablaSesiones.getValueAt(clickTabla, 2);
-        
         
         int column = tablaSesiones.getColumnModel().getColumnIndexAtX(evt.getX());
         int row = evt.getY()/tablaSesiones.getRowHeight();
@@ -428,13 +442,14 @@ public class interfaz extends javax.swing.JFrame {
                 ((JButton)value).doClick();
                 JButton boton = (JButton) value;
 
-                if(boton.getName().equals("q")){
+                if(boton.getName().equals("e")){
                     int confirm = JOptionPane.showConfirmDialog(null, "¿Eliminar esta sesión?", "Confirmar", JOptionPane.OK_CANCEL_OPTION);
                     if(JOptionPane.OK_OPTION == confirm){
                         System.out.println("confirmadoo");
-                        
+                        eliminarSesion(id);
+                        //Thread.sleep(1000);
+                        mostrarSesiones(asesorActual.getId());
                     }
-                    
                     //EVENTOS ELIMINAR
                 }
             }
